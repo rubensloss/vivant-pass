@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>VIVANT PASS | Solução Inteligente de Passeios & Receptivos 4x4</title>
+  <title>VIVANT PASS | Solução Inteligente de Passeios & Receptivos 4x4 • Lençóis Maranhenses</title>
   <!-- Google Fonts: Modern Luxury Sans (Outfit + Plus Jakarta Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,7 +89,7 @@
     .pulse-badge { animation: pulseGlow 2.5s infinite ease-in-out; }
   </style>
 </head>
-<body class="bg-surface-50 text-surface-900 font-sans antialiased selection:bg-brand-500 selection:text-white">
+<body class="bg-surface-50 text-surface-900 font-sans antialiased selection:bg-brand-500 selection:text-white pb-16 sm:pb-0">
 
   <!-- ========================================== -->
   <!-- BARRA SUPERIOR: ALTERNADOR TURISTA / RECEPTIVO -->
@@ -129,11 +129,22 @@
 
         <!-- Ações do Topo -->
         <div class="flex items-center space-x-2">
+          <!-- Trilha Sonora das Dunas -->
+          <button id="btn-sound-toggle" onclick="toggleAudioAtmosphere()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center space-x-1.5 border border-white/15 transition-all">
+            <div id="equalizer-bars" class="flex items-end space-x-0.5 h-3 opacity-40">
+              <span class="w-0.5 h-1.5 bg-emerald-400 rounded-full"></span>
+              <span class="w-0.5 h-3 bg-white rounded-full"></span>
+              <span class="w-0.5 h-2 bg-amber-400 rounded-full"></span>
+            </div>
+            <i class="ph-fill ph-music-notes text-sm text-brand-300"></i>
+            <span id="text-sound-status" class="hidden md:inline">Trilha das Dunas</span>
+          </button>
+
           <!-- Carrinho / Passaporte de Passeios -->
-          <button onclick="openVoucherModal()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center space-x-1.5 border border-white/15 transition-all">
-            <i class="ph-bold ph-ticket text-brand-400"></i>
-            <span class="hidden sm:inline">Meus Vouchers</span>
-            <span id="badge-pass-count" class="w-4 h-4 rounded-full bg-brand-500 text-[10px] flex items-center justify-center font-bold text-white">2</span>
+          <button onclick="openVipModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-brand-600 to-lagoon-600 hover:from-brand-500 text-white text-xs font-bold flex items-center space-x-1.5 shadow-md shadow-brand-950/40 transition-all">
+            <i class="ph-fill ph-crown text-amber-300"></i>
+            <span class="hidden sm:inline">Passe VIP</span>
+            <span class="sm:hidden">VIP</span>
           </button>
 
           <!-- WhatsApp de Suporte -->
@@ -152,12 +163,12 @@
   <!-- ========================================== -->
   <main id="view-tourist">
 
-    <!-- HERO SECTION: LENÇÓIS MARANHENSES -->
+    <!-- HERO SECTION: LENÇÓIS MARANHENSES AUTÊNTICO -->
     <section class="relative bg-surface-950 text-white overflow-hidden min-h-[540px] sm:min-h-[620px] flex items-center">
       
-      <!-- Fundo Visual Panorâmico: Lagoas e Dunas dos Lençóis -->
+      <!-- Fundo Visual Panorâmico: Lagoas e Dunas Autênticas dos Lençóis Maranhenses -->
       <div class="absolute inset-0 z-0 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=1920&q=85" alt="Lençóis Maranhenses Dunas e Lagoa" class="w-full h-full object-cover scale-105 transform transition-transform duration-1000">
+        <img id="hero-bg-img" src="assets/hero-lencois.jpg" alt="Lençóis Maranhenses Dunas e Lagoa" class="w-full h-full object-cover scale-105 transform transition-transform duration-1000">
         
         <!-- Filtro Mobile Vertical (Garante leitura 100% perfeita no celular) -->
         <div class="block sm:hidden absolute inset-0 bg-gradient-to-b from-surface-950/85 via-surface-950/65 to-surface-950/95"></div>
@@ -179,6 +190,10 @@
             <i class="ph-bold ph-drop"></i>
             <span>Lagoas com 96% de Cheia • Temporada Plena</span>
           </span>
+          <button onclick="openCinemaModal()" class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-md transition-all active:scale-95 cursor-pointer shadow-md">
+            <i class="ph-fill ph-film-strip text-lagoon-300 text-sm"></i>
+            <span>Galeria Cinema 360° • Lençóis</span>
+          </button>
           <span class="text-[11px] sm:text-xs text-zinc-300 flex items-center space-x-1 font-medium bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
             <i class="ph-bold ph-map-pin text-duna-400"></i>
             <span>Barreirinhas • Santo Amaro • Atins</span>
@@ -193,7 +208,7 @@
           <div class="flex items-center space-x-2 text-[10px] sm:text-[11px] text-zinc-300 mb-4 sm:mb-6 opacity-85">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <i class="ph-fill ph-hand-tap text-lagoon-300 text-sm"></i>
-            <span>Toque no título para ouvir a brisa das dunas e ver efeitos</span>
+            <span id="title-hint-text">Toque no título para ouvir a brisa das dunas e ver efeitos</span>
           </div>
         </div>
 
@@ -243,7 +258,7 @@
 
           <button onclick="openInviteModal()" class="col-span-2 sm:col-span-1 px-3 sm:px-4 py-3 rounded-xl bg-black/40 hover:bg-black/60 text-zinc-200 font-semibold text-xs transition-all border border-white/20 active:scale-95 flex items-center justify-center space-x-1.5">
             <i class="ph-bold ph-users text-base text-brand-300"></i>
-            <span>Convidar Amigo para o 4x4</span>
+            <span>Convidar Amigo</span>
           </button>
         </div>
 
@@ -274,7 +289,7 @@
       </div>
     </div>
 
-    <!-- SEÇÃO 1: CATÁLOGO VIVO DE PASSEIOS COM VAGAS EM TEMPO REAL -->
+    <!-- SEÇÃO 1: CATÁLOGO VIVO DE PASSEIOS COM FOTOS REAIS DOS LENÇÓIS -->
     <section id="saidas-hoje" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
@@ -286,21 +301,21 @@
         <!-- Filtro Rápido -->
         <div class="flex items-center space-x-2 text-xs">
           <span class="text-surface-500 font-medium">Filtrar:</span>
-          <button class="px-3 py-1.5 rounded-lg bg-surface-900 text-white font-bold">Todos</button>
-          <button class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300">4x4 Dunas</button>
-          <button class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300">Lancha Rio</button>
-          <button class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300">Santo Amaro</button>
+          <button onclick="filterTours('all')" id="btn-filter-all" class="px-3 py-1.5 rounded-lg bg-surface-900 text-white font-bold transition-all">Todos</button>
+          <button onclick="filterTours('4x4')" id="btn-filter-4x4" class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300 transition-all">4x4 Dunas</button>
+          <button onclick="filterTours('rio')" id="btn-filter-rio" class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300 transition-all">Lancha Rio</button>
+          <button onclick="filterTours('santo-amaro')" id="btn-filter-santoamaro" class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300 transition-all">Santo Amaro</button>
         </div>
       </div>
 
       <!-- Grid de Passeios -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        <!-- CARD 1: CIRCUITO LAGOA BONITA 4X4 -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+        <!-- CARD 1: CIRCUITO LAGOA BONITA 4X4 (FOTO REAL) -->
+        <div data-tour-type="4x4" class="tour-card bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
           <div>
             <div class="relative h-56 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80" alt="Lagoa Bonita" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="assets/lagoa-bonita.jpg" alt="Lagoa Bonita Lençóis Maranhenses" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-3 left-3 bg-red-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1 animate-pulse">
                 <i class="ph-bold ph-fire"></i>
                 <span>Apenas 3 vagas para hoje!</span>
@@ -357,11 +372,11 @@
           </div>
         </div>
 
-        <!-- CARD 2: SANTO AMARO • LAGOA DA GAIVOTA & BETÂNIA -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+        <!-- CARD 2: SANTO AMARO • LAGOA DA GAIVOTA & BETÂNIA (FOTO REAL) -->
+        <div data-tour-type="santo-amaro" class="tour-card bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
           <div>
             <div class="relative h-56 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80" alt="Santo Amaro" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="assets/santo-amaro.jpg" alt="Santo Amaro Lençóis Maranhenses" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
                 <i class="ph-bold ph-sparkle"></i>
                 <span>Lagoas mais profundas e azuis</span>
@@ -417,11 +432,11 @@
           </div>
         </div>
 
-        <!-- CARD 3: LANCHA VOADEIRA RIO PREGUIÇAS -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+        <!-- CARD 3: LANCHA VOADEIRA RIO PREGUIÇAS (FOTO REAL CABURÉ) -->
+        <div data-tour-type="rio" class="tour-card bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
           <div>
             <div class="relative h-56 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Rio Preguiças e Caburé" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="assets/cabure-lancha.jpg" alt="Caburé e Rio Preguiças" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-3 left-3 bg-lagoon-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
                 <i class="ph-bold ph-boat"></i>
                 <span>Passeio Náutico Clássico</span>
@@ -477,11 +492,11 @@
           </div>
         </div>
 
-        <!-- CARD 4: ATINS SUNSET & CAMARÃO DO SR. ANTÔNIO -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+        <!-- CARD 4: ATINS SUNSET & DUNAS DA CAPIVARA (FOTO REAL PÔR DO SOL) -->
+        <div data-tour-type="4x4" class="tour-card bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
           <div>
             <div class="relative h-56 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" alt="Atins Sunset" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="assets/atins-sunset.jpg" alt="Pôr do Sol nos Lençóis Maranhenses" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-3 left-3 bg-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
                 <i class="ph-bold ph-fork-knife"></i>
                 <span>Gastronomia & Charme</span>
@@ -527,11 +542,11 @@
           </div>
         </div>
 
-        <!-- CARD 5: VOO PANORÂMICO DE MONOMOTOR -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+        <!-- CARD 5: VOO PANORÂMICO DE MONOMOTOR (FOTO REAL AÉREA) -->
+        <div data-tour-type="4x4" class="tour-card bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
           <div>
             <div class="relative h-56 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Voo Panorâmico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="assets/voo-panoramico.jpg" alt="Voo Panorâmico Lençóis Maranhenses" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute top-3 left-3 bg-purple-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
                 <i class="ph-bold ph-airplane-takeoff"></i>
                 <span>Experiência VIP Inesquecível</span>
@@ -1069,7 +1084,179 @@
   </main>
 
   <!-- ========================================== -->
-  <!-- MODAL: CONVIDAR AMIGO / FECHAR 4X4 EM GRUPO -->
+  <!-- BARRA FIXA INFERIOR NO MOBILE (STICKY CTA) -->
+  <!-- ========================================== -->
+  <div id="mobile-sticky-cta" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-950/95 backdrop-blur-md border-t border-white/15 p-3 flex items-center justify-between shadow-2xl">
+    <div>
+      <span class="text-[10px] text-zinc-400 block">Lagoas Cheias • Hoje</span>
+      <span class="font-display font-extrabold text-white text-sm">A partir de R$ 130</span>
+    </div>
+    <div class="flex space-x-2">
+      <button onclick="scrollToSection('personalizar-passeio')" class="px-3 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl flex items-center space-x-1 border border-white/20">
+        <i class="ph-bold ph-sliders"></i>
+        <span>Personalizar</span>
+      </button>
+      <button onclick="openPixModal()" class="px-4 py-2 bg-gradient-to-r from-brand-600 to-lagoon-600 text-white font-extrabold text-xs rounded-xl shadow-lg flex items-center space-x-1">
+        <i class="ph-bold ph-lightning"></i>
+        <span>Reservar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- CONCIERGE IA FLUTUANTE (VIVANTPASS CONCIERGE) -->
+  <!-- ========================================== -->
+  <div class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40">
+    <button onclick="toggleConciergeChat()" class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-brand-600 via-lagoon-500 to-brand-500 text-white shadow-2xl shadow-brand-500/40 flex items-center justify-center hover:scale-110 active:scale-95 transition-all relative border border-white/20">
+      <i class="ph-fill ph-chat-teardrop-dots text-2xl"></i>
+      <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-surface-950 rounded-full animate-ping"></span>
+      <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-surface-950 rounded-full"></span>
+    </button>
+  </div>
+
+  <!-- GAVETA DO CHAT CONCIERGE IA -->
+  <div id="drawer-concierge" class="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-surface-950 border-l border-white/15 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between text-white">
+    <!-- Topo do Chat -->
+    <div class="p-5 border-b border-white/10 flex items-center justify-between bg-surface-900">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-lagoon-500 flex items-center justify-center text-white font-bold">
+          <i class="ph-fill ph-robot text-lg"></i>
+        </div>
+        <div>
+          <h4 class="font-display font-bold text-sm text-white">Concierge IA • Lençóis 24/7</h4>
+          <span class="text-[10px] text-emerald-400 flex items-center space-x-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Online • Tire qualquer dúvida</span>
+          </span>
+        </div>
+      </div>
+      <button onclick="toggleConciergeChat()" class="text-zinc-400 hover:text-white text-xl">
+        <i class="ph-bold ph-x"></i>
+      </button>
+    </div>
+
+    <!-- Mensagens -->
+    <div id="concierge-messages" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs">
+      <div class="bg-white/10 p-3 rounded-2xl rounded-tl-sm text-zinc-200 leading-relaxed border border-white/10">
+        Olá! Sou a assistente de IA da <strong>VivantPass</strong> nos Lençóis Maranhenses. Posso te ajudar a escolher entre o circuito Lagoa Bonita ou Santo Amaro, tirar dúvidas sobre o que levar na mochila ou verificar vagas para hoje!
+      </div>
+      
+      <!-- Sugestões Rápidas -->
+      <div class="space-y-1.5 pt-2">
+        <span class="text-[10px] text-zinc-400 uppercase tracking-wider block font-bold">Perguntas Frequentes:</span>
+        <button onclick="askConcierge('Qual a diferença entre Lagoa Bonita e Santo Amaro?')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-white/10 text-brand-300 border border-white/10 transition-colors">
+          • Qual a diferença entre Lagoa Bonita e Santo Amaro?
+        </button>
+        <button onclick="askConcierge('Dá para levar crianças e idosos no 4x4?')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-white/10 text-brand-300 border border-white/10 transition-colors">
+          • Dá para levar crianças e idosos no 4x4?
+        </button>
+        <button onclick="askConcierge('As lagoas estão realmente cheias agora?')" class="w-full text-left p-2 rounded-xl bg-white/5 hover:bg-white/10 text-brand-300 border border-white/10 transition-colors">
+          • As lagoas estão realmente cheias agora?
+        </button>
+      </div>
+    </div>
+
+    <!-- Input de Mensagem -->
+    <div class="p-4 border-t border-white/10 bg-surface-900">
+      <form onsubmit="handleConciergeSubmit(event)" class="flex items-center space-x-2">
+        <input type="text" id="concierge-input" placeholder="Digite sua pergunta..." class="flex-1 bg-white/10 border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-brand-500">
+        <button type="submit" class="p-2.5 bg-brand-600 hover:bg-brand-500 rounded-xl text-white font-bold transition-colors">
+          <i class="ph-bold ph-paper-plane-right"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CINEMA HD / GALERIA PANORÂMICA 360° -->
+  <!-- ========================================== -->
+  <div id="modal-cinema" class="fixed inset-0 z-50 bg-surface-950/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-surface-900 rounded-3xl max-w-4xl w-full p-6 border border-white/15 shadow-2xl relative space-y-4">
+      <button onclick="closeCinemaModal()" class="absolute top-5 right-5 text-zinc-400 hover:text-white text-2xl z-10">
+        <i class="ph-bold ph-x"></i>
+      </button>
+
+      <div class="flex items-center justify-between pr-8">
+        <div>
+          <span class="text-[10px] font-bold tracking-widest text-brand-400 uppercase">Galeria Cinematográfica Oficial</span>
+          <h3 id="cinema-title" class="font-display text-xl sm:text-2xl font-bold text-white mt-1">Parque Nacional dos Lençóis Maranhenses</h3>
+        </div>
+      </div>
+
+      <!-- Imagem Grande de Destaque -->
+      <div class="relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-white/10">
+        <img id="cinema-active-img" src="assets/hero-lencois.jpg" alt="Lençóis Maranhenses Cinema" class="w-full h-full object-cover transition-all duration-500">
+      </div>
+
+      <!-- Miniaturas para Navegar -->
+      <div class="grid grid-cols-5 gap-2 pt-2">
+        <button onclick="setCinemaScene('assets/hero-lencois.jpg', 'Dunas e Lagoas Cristalinas • Vista Panorâmica')" class="h-16 rounded-xl overflow-hidden border-2 border-brand-500 opacity-100 hover:opacity-100 transition-all">
+          <img src="assets/hero-lencois.jpg" class="w-full h-full object-cover">
+        </button>
+        <button onclick="setCinemaScene('assets/lagoa-bonita.jpg', 'Circuito Lagoa Bonita • Subida da Grande Duna')" class="h-16 rounded-xl overflow-hidden border border-white/20 opacity-70 hover:opacity-100 transition-all">
+          <img src="assets/lagoa-bonita.jpg" class="w-full h-full object-cover">
+        </button>
+        <button onclick="setCinemaScene('assets/santo-amaro.jpg', 'Santo Amaro • Lagoa da Gaivota & Betânia')" class="h-16 rounded-xl overflow-hidden border border-white/20 opacity-70 hover:opacity-100 transition-all">
+          <img src="assets/santo-amaro.jpg" class="w-full h-full object-cover">
+        </button>
+        <button onclick="setCinemaScene('assets/cabure-lancha.jpg', 'Rio Preguiças & Península de Caburé')" class="h-16 rounded-xl overflow-hidden border border-white/20 opacity-70 hover:opacity-100 transition-all">
+          <img src="assets/cabure-lancha.jpg" class="w-full h-full object-cover">
+        </button>
+        <button onclick="setCinemaScene('assets/atins-sunset.jpg', 'Pôr do Sol Mágico nas Dunas de Atins')" class="h-16 rounded-xl overflow-hidden border border-white/20 opacity-70 hover:opacity-100 transition-all">
+          <img src="assets/atins-sunset.jpg" class="w-full h-full object-cover">
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: PASSAPORTE VIP DO VIAJANTE -->
+  <!-- ========================================== -->
+  <div id="modal-vip" class="fixed inset-0 z-50 bg-surface-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 border border-surface-300 shadow-2xl relative text-center">
+      <button onclick="closeVipModal()" class="absolute top-6 right-6 text-surface-400 hover:text-surface-900 text-xl">
+        <i class="ph-bold ph-x"></i>
+      </button>
+
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 via-lagoon-500 to-duna-400 p-0.5 mx-auto flex items-center justify-center shadow-lg">
+        <div class="w-full h-full bg-surface-950 rounded-[14px] flex items-center justify-center">
+          <i class="ph-fill ph-crown text-2xl text-amber-300"></i>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-display text-2xl font-bold text-surface-900">Passaporte VIP • VivantPass</h3>
+        <p class="text-xs text-surface-600 mt-1">Acesso prioritário a saídas em veículos 4x4 privativos, condições exclusivas e suporte VIP.</p>
+      </div>
+
+      <div class="p-4 bg-surface-50 rounded-2xl border border-surface-200 text-left space-y-2 text-xs">
+        <div class="flex justify-between">
+          <span class="text-surface-500">Status da Credencial:</span>
+          <span class="font-bold text-brand-700">VIP GOLD 2026</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-surface-500">Token de Embarque:</span>
+          <span class="font-mono font-bold text-surface-900">VP-LENCOIS-VIP77</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-surface-500">Benefício Ativo:</span>
+          <span class="font-semibold text-emerald-600">5% OFF Pix + Cooler VIP cortesia</span>
+        </div>
+      </div>
+
+      <div class="pt-2 space-y-2">
+        <button onclick="copyVipLink()" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl shadow-md">
+          Copiar Meu Link Exclusivo de Acesso VIP
+        </button>
+        <button onclick="closeVipModal()" class="w-full py-2.5 text-xs text-surface-600 font-semibold hover:bg-surface-100 rounded-xl">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CONVIDAR AMIGO -->
   <!-- ========================================== -->
   <div id="modal-invite" class="fixed inset-0 z-50 bg-surface-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 border border-surface-300 shadow-2xl relative">
@@ -1079,8 +1266,8 @@
 
       <div>
         <span class="text-xs font-bold tracking-widest text-brand-700 uppercase">Compartilhamento de Expedição</span>
-        <h3 class="font-display text-2xl font-bold text-surface-900 mt-1">Convidar Amigo para o 4x4</h3>
-        <p class="text-xs text-surface-600 mt-1">Envie o link das saídas dos Lençóis para os amigos ou hóspedes da sua pousada para dividirem um carro privativo!</p>
+        <h3 class="font-display text-2xl font-bold text-surface-900 mt-1">Convidar Amigo</h3>
+        <p class="text-xs text-surface-600 mt-1">Envie o link das saídas dos Lençóis para amigos ou hóspedes da sua pousada para dividirem um carro privativo!</p>
       </div>
 
       <div class="space-y-4 text-xs">
@@ -1196,6 +1383,10 @@
       addons: 0
     };
 
+    let isAudioPlaying = false;
+    let audioContext = null;
+    let audioInterval = null;
+
     // Inicialização ao carregar
     window.addEventListener('DOMContentLoaded', () => {
       // Gerar QR Code do Voucher
@@ -1233,20 +1424,77 @@
       const viewAgency = document.getElementById('view-agency');
       const btnTourist = document.getElementById('btn-mode-tourist');
       const btnAgency = document.getElementById('btn-mode-agency');
+      const stickyCta = document.getElementById('mobile-sticky-cta');
 
       if (mode === 'tourist') {
         viewTourist.classList.remove('hidden');
         viewAgency.classList.add('hidden');
+        if (stickyCta) stickyCta.classList.remove('hidden');
         btnTourist.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold flex items-center space-x-1.5 transition-all bg-gradient-to-r from-brand-600 to-lagoon-600 text-white shadow-sm';
         btnAgency.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 transition-all text-zinc-400 hover:text-white';
         showToast('Modo Viajante: Selecione e reserve seus passeios.');
       } else {
         viewTourist.classList.add('hidden');
         viewAgency.classList.remove('hidden');
+        if (stickyCta) stickyCta.classList.add('hidden');
         btnAgency.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold flex items-center space-x-1.5 transition-all bg-gradient-to-r from-brand-600 to-lagoon-600 text-white shadow-sm';
         btnTourist.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 transition-all text-zinc-400 hover:text-white';
         showToast('Modo Receptivo: Cockpit de gestão de frotas e saídas ativado.');
       }
+    }
+
+    // Trilha Sonora com Síntese Harmônica das Dunas (Web Audio API)
+    function toggleAudioAtmosphere() {
+      const textStatus = document.getElementById('text-sound-status');
+      const eq = document.getElementById('equalizer-bars');
+
+      if (!isAudioPlaying) {
+        try {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          playDuneAmbientNotes();
+          audioInterval = setInterval(playDuneAmbientNotes, 2400);
+          isAudioPlaying = true;
+          if (textStatus) textStatus.textContent = 'Pausar Trilha';
+          if (eq) {
+            eq.classList.remove('opacity-40');
+            eq.querySelectorAll('span').forEach(s => s.classList.add('animate-bounce'));
+          }
+          showToast('🎶 Trilha acústica das dunas ativada!');
+        } catch (e) {
+          console.log('Audio init prevented:', e);
+        }
+      } else {
+        if (audioInterval) clearInterval(audioInterval);
+        isAudioPlaying = false;
+        if (textStatus) textStatus.textContent = 'Trilha das Dunas';
+        if (eq) {
+          eq.classList.add('opacity-40');
+          eq.querySelectorAll('span').forEach(s => s.classList.remove('animate-bounce'));
+        }
+        showToast('Trilha pausada.');
+      }
+    }
+
+    // Toca acordes relaxantes de violão/natureza nas dunas
+    function playDuneAmbientNotes() {
+      if (!audioContext) return;
+      const notes = [261.63, 329.63, 392.00, 523.25, 587.33]; // Escala pentatônica acústica
+      notes.forEach((freq, idx) => {
+        setTimeout(() => {
+          try {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+            gain.gain.setValueAtTime(0.04, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 1.2);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.start();
+            osc.stop(audioContext.currentTime + 1.2);
+          } catch(e) {}
+        }, idx * 160);
+      });
     }
 
     // Interação Tátil do Topo
@@ -1257,6 +1505,7 @@
       if (sub) sub.classList.add('scale-[1.015]', 'brightness-125');
       
       if (navigator.vibrate) navigator.vibrate([35, 45, 35]);
+      if (!isAudioPlaying) toggleAudioAtmosphere();
 
       setTimeout(() => {
         if (title) title.classList.remove('scale-[1.015]', 'brightness-110');
@@ -1264,6 +1513,29 @@
       }, 700);
 
       showToast('Lençóis Maranhenses: Águas cristalinas e dunas infinitas ativadas!');
+    }
+
+    // Filtros de Passeios
+    function filterTours(type) {
+      document.querySelectorAll('.tour-card').forEach(card => {
+        if (type === 'all' || card.getAttribute('data-tour-type') === type) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Atualizar botões de filtro
+      ['all', '4x4', 'rio', 'santoamaro'].forEach(id => {
+        const btn = document.getElementById('btn-filter-' + id);
+        if (btn) {
+          if ((type === 'all' && id === 'all') || (type === '4x4' && id === '4x4') || (type === 'rio' && id === 'rio') || (type === 'santo-amaro' && id === 'santoamaro')) {
+            btn.className = 'px-3 py-1.5 rounded-lg bg-surface-900 text-white font-bold transition-all';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300 transition-all';
+          }
+        }
+      });
     }
 
     // Seleção de Circuito Base no Customizador
@@ -1373,13 +1645,94 @@
     function closePixModal() {
       document.getElementById('modal-pix').classList.add('hidden');
     }
-    function openVoucherModal() {
-      scrollToSection('meus-vouchers');
-      showToast('Visualizando seu voucher de embarque.');
+    function openVipModal() {
+      document.getElementById('modal-vip').classList.remove('hidden');
+    }
+    function closeVipModal() {
+      document.getElementById('modal-vip').classList.add('hidden');
+    }
+    function copyVipLink() {
+      navigator.clipboard.writeText("https://rubensloss.github.io/vivant-pass/?vip=GOLD2026");
+      showToast('Link VIP copiado! Aproveite seus benefícios exclusivos.');
+    }
+    function openCinemaModal() {
+      document.getElementById('modal-cinema').classList.remove('hidden');
+    }
+    function closeCinemaModal() {
+      document.getElementById('modal-cinema').classList.add('hidden');
+    }
+    function setCinemaScene(src, title) {
+      document.getElementById('cinema-active-img').src = src;
+      document.getElementById('cinema-title').textContent = title;
+      showToast('Cena carregada: ' + title);
     }
     function openLagoonStatusModal() {
       scrollToSection('guia-ecoturista');
       showToast('Tábua de cheia: Lagoas com 96% de capacidade hídrica!');
+    }
+
+    // Concierge IA
+    function toggleConciergeChat() {
+      const drawer = document.getElementById('drawer-concierge');
+      if (drawer.classList.contains('translate-x-full')) {
+        drawer.classList.remove('translate-x-full');
+      } else {
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function askConcierge(question) {
+      const messages = document.getElementById('concierge-messages');
+      
+      // User message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'bg-brand-600/30 p-2.5 rounded-2xl rounded-tr-sm text-white text-right border border-brand-500/30 font-medium';
+      userDiv.textContent = question;
+      messages.appendChild(userDiv);
+
+      let answer = "";
+      if (question.includes("diferença")) {
+        answer = "A **Lagoa Bonita** é o circuito clássico com a subida da duna de 30m e o pôr do sol mais famoso. Já **Santo Amaro** tem as lagoas mais profundas e azuis (como Gaivota e Betânia), onde o 4x4 chega bem pertinho da água!";
+      } else if (question.includes("crianças")) {
+        answer = "Sim! Crianças e idosos costumam adorar o passeio de Lancha pelo Rio Preguiças e Santo Amaro, que exigem menos caminhada nas dunas. Para a Lagoa Bonita, há uma corda de apoio na subida da primeira duna.";
+      } else {
+        answer = "Sim! As lagoas estão em **temporada plena com 96% de cheia**. A água está na temperatura perfeita e com transparência cristalina!";
+      }
+
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.className = 'bg-white/10 p-3 rounded-2xl rounded-tl-sm text-zinc-200 leading-relaxed border border-white/10';
+        botDiv.innerHTML = answer;
+        messages.appendChild(botDiv);
+        messages.scrollTop = messages.scrollHeight;
+        playChimeSound();
+      }, 500);
+    }
+
+    function handleConciergeSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('concierge-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      askConcierge(text);
+    }
+
+    function playChimeSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880.00, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+      } catch(e) {}
     }
 
     // Ações Rápidas
@@ -1395,6 +1748,7 @@
       closePixModal();
       showToast('🎉 Pagamento registrado! Seu voucher digital foi emitido e enviado no WhatsApp.');
       scrollToSection('meus-vouchers');
+      playChimeSound();
     }
     function simulateVoucherDownload() {
       showToast('Baixando imagem do voucher para o rolo de fotos do celular...');
@@ -1404,6 +1758,7 @@
     }
     function dispatchAllWhatsApps() {
       showToast('📲 28 mensagens de confirmação de pick-up disparadas automaticamente com sucesso!');
+      playChimeSound();
     }
     function viewManifest(vehicle) {
       showToast('Abrindo manifesto de passageiros do ' + vehicle);
