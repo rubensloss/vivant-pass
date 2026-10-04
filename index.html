@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>VIVANT PASS | Solução Inteligente de Passeios & Receptivos 4x4</title>
+  <!-- Google Fonts: Modern Luxury Sans (Outfit + Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- QR Code Generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            },
+            duna: {
+              50: '#fefce8',
+              100: '#fef9c3',
+              200: '#fef08a',
+              300: '#fde047',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+            },
+            lagoon: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              200: '#a5f3fc',
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              700: '#0e7490',
+            },
+            surface: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#020617',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body {
+      overflow-x: clip;
+      max-width: 100vw;
+      width: 100%;
+      -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+    .pulse-badge { animation: pulseGlow 2.5s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-surface-50 text-surface-900 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ========================================== -->
+  <!-- BARRA SUPERIOR: ALTERNADOR TURISTA / RECEPTIVO -->
+  <!-- ========================================== -->
+  <header class="sticky top-0 z-50 bg-surface-950/95 backdrop-blur-md border-b border-white/10 text-white transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14 sm:h-16">
+        
+        <!-- Logo e Edição -->
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-lagoon-500 to-duna-400 p-0.5 shadow-lg shadow-brand-500/20 flex items-center justify-center">
+            <div class="w-full h-full bg-surface-950 rounded-[10px] flex items-center justify-center">
+              <i class="ph-fill ph-compass text-lg sm:text-xl text-lagoon-400"></i>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-white">VIVANT<span class="text-lagoon-400">PASS</span></span>
+              <span class="text-[10px] bg-brand-500/20 text-brand-300 font-bold px-2 py-0.5 rounded-full border border-brand-500/30 uppercase tracking-widest hidden sm:inline-block">Receptivos & 4x4</span>
+            </div>
+            <p class="text-[10px] text-zinc-400 hidden sm:block">Lençóis Maranhenses • Barreirinhas, Atins e Santo Amaro</p>
+          </div>
+        </div>
+
+        <!-- Seletor Central de Modo: Turista vs Empresa Receptiva -->
+        <div class="flex items-center bg-surface-900 p-1 rounded-full border border-white/15 shadow-inner">
+          <button id="btn-mode-tourist" onclick="switchAppMode('tourist')" class="px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold flex items-center space-x-1.5 transition-all bg-gradient-to-r from-brand-600 to-lagoon-600 text-white shadow-sm">
+            <i class="ph-bold ph-compass"></i>
+            <span>Viajante</span>
+          </button>
+          <button id="btn-mode-agency" onclick="switchAppMode('agency')" class="px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 transition-all text-zinc-400 hover:text-white">
+            <i class="ph-bold ph-chart-line-up"></i>
+            <span class="hidden sm:inline">Cockpit Receptivo</span>
+            <span class="sm:hidden">Empresa</span>
+          </button>
+        </div>
+
+        <!-- Ações do Topo -->
+        <div class="flex items-center space-x-2">
+          <!-- Carrinho / Passaporte de Passeios -->
+          <button onclick="openVoucherModal()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center space-x-1.5 border border-white/15 transition-all">
+            <i class="ph-bold ph-ticket text-brand-400"></i>
+            <span class="hidden sm:inline">Meus Vouchers</span>
+            <span id="badge-pass-count" class="w-4 h-4 rounded-full bg-brand-500 text-[10px] flex items-center justify-center font-bold text-white">2</span>
+          </button>
+
+          <!-- WhatsApp de Suporte -->
+          <a href="https://api.whatsapp.com/send?phone=5598999999999&text=Oi!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20os%20passeios%20nos%20Len%C3%A7%C3%B3is%20Maranhenses" target="_blank" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs font-bold flex items-center space-x-1 transition-all shadow-md">
+            <i class="ph-bold ph-whatsapp-logo text-base"></i>
+            <span class="hidden sm:inline">WhatsApp</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- CONTEÚDO PRINCIPAL: MODO VIAJANTE -->
+  <!-- ========================================== -->
+  <main id="view-tourist">
+
+    <!-- HERO SECTION: LENÇÓIS MARANHENSES -->
+    <section class="relative bg-surface-950 text-white overflow-hidden min-h-[540px] sm:min-h-[620px] flex items-center">
+      
+      <!-- Fundo Visual Panorâmico: Lagoas e Dunas dos Lençóis -->
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=1920&q=85" alt="Lençóis Maranhenses Dunas e Lagoa" class="w-full h-full object-cover scale-105 transform transition-transform duration-1000">
+        
+        <!-- Filtro Mobile Vertical (Garante leitura 100% perfeita no celular) -->
+        <div class="block sm:hidden absolute inset-0 bg-gradient-to-b from-surface-950/85 via-surface-950/65 to-surface-950/95"></div>
+
+        <!-- Filtro Desktop Direcional (Escurece à esquerda, abre o sol nas dunas à direita) -->
+        <div class="hidden sm:block absolute inset-0 bg-gradient-to-r from-surface-950/90 via-surface-950/60 to-surface-950/20"></div>
+        <div class="hidden sm:block absolute inset-0 bg-gradient-to-t from-surface-950/95 via-transparent to-black/30"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20 w-full">
+        
+        <!-- Badges de Autoridade -->
+        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-4 sm:mb-6">
+          <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-white/15 text-white border border-white/25 backdrop-blur-md">
+            <i class="ph-fill ph-shield-check text-brand-400"></i>
+            <span>Veículos 4x4 Homologados ICMBio</span>
+          </span>
+          <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-brand-600 text-white shadow-lg pulse-badge">
+            <i class="ph-bold ph-drop"></i>
+            <span>Lagoas com 96% de Cheia • Temporada Plena</span>
+          </span>
+          <span class="text-[11px] sm:text-xs text-zinc-300 flex items-center space-x-1 font-medium bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
+            <i class="ph-bold ph-map-pin text-duna-400"></i>
+            <span>Barreirinhas • Santo Amaro • Atins</span>
+          </span>
+        </div>
+
+        <!-- Título Interativo -->
+        <div class="relative group cursor-pointer inline-block max-w-full" onclick="triggerHeroInteraction()">
+          <h1 id="hero-title" class="font-display text-3xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.12] mb-2 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] select-none transition-all duration-300">
+            A Magia das <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-300 to-amber-300 underline decoration-lagoon-400/50 underline-offset-8">Lagoas & Dunas</span> dos Lençóis Maranhenses
+          </h1>
+          <div class="flex items-center space-x-2 text-[10px] sm:text-[11px] text-zinc-300 mb-4 sm:mb-6 opacity-85">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <i class="ph-fill ph-hand-tap text-lagoon-300 text-sm"></i>
+            <span>Toque no título para ouvir a brisa das dunas e ver efeitos</span>
+          </div>
+        </div>
+
+        <!-- Subtítulo Interativo (Mesmo modelo de excelência da Vivant IA) -->
+        <div id="interactive-subtitle" onclick="triggerHeroInteraction()" class="group/sub cursor-pointer max-w-3xl mb-6 sm:mb-8 transition-all duration-300 select-none active:scale-[0.99] touch-manipulation">
+          <p class="font-display font-bold text-base sm:text-xl lg:text-2xl text-white leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.98)] tracking-wide">
+            Expedições 4x4 Diárias, Travessias em 
+            <span class="text-emerald-400 group-hover/sub:text-emerald-300 font-bold transition-colors">
+              lagoas cristalinas
+            </span>, 
+            banho de água doce sob o 
+            <span class="text-white group-hover/sub:text-cyan-100 font-extrabold transition-colors underline decoration-white/40 underline-offset-4">
+              sol nas dunas brancas
+            </span> 
+            e o lendário 
+            <span class="text-amber-300 group-hover/sub:text-amber-200 font-bold transition-colors">
+              pôr do sol em Atins e Santo Amaro
+            </span>. 
+            <span class="block sm:inline mt-1.5 sm:mt-0 text-zinc-300 group-hover/sub:text-white font-medium text-xs sm:text-base">
+              Vagas limitadas por veículo hoje.
+            </span>
+          </p>
+          <div class="flex items-center space-x-2 mt-2 text-[10px] sm:text-xs text-zinc-300 opacity-80 group-hover/sub:opacity-100 transition-opacity">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse" style="animation-delay: 0.15s"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" style="animation-delay: 0.3s"></span>
+            <span class="text-zinc-300">Toque para sentir a atmosfera dos Lençóis</span>
+          </div>
+        </div>
+
+        <!-- Barra de Ações Rápidas -->
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2.5 sm:gap-3 pt-4 border-t border-white/20">
+          <button onclick="scrollToSection('saidas-hoje')" class="col-span-2 sm:col-span-1 px-4 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs transition-all shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center space-x-2">
+            <i class="ph-bold ph-calendar-check text-base"></i>
+            <span>Ver Saídas & Vagas de Hoje</span>
+          </button>
+
+          <button onclick="scrollToSection('personalizar-passeio')" class="px-3 sm:px-4 py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs transition-all backdrop-blur-md border border-white/30 active:scale-95 flex items-center justify-center space-x-1.5 shadow-md">
+            <i class="ph-fill ph-sliders text-amber-300 text-base"></i>
+            <span>Personalizar Passeio Privativo</span>
+          </button>
+
+          <button onclick="openLagoonStatusModal()" class="px-3 sm:px-4 py-3 rounded-xl bg-black/40 hover:bg-black/60 text-zinc-200 font-semibold text-xs transition-all border border-white/20 active:scale-95 flex items-center justify-center space-x-1.5">
+            <i class="ph-fill ph-drop text-lagoon-400 text-base"></i>
+            <span>Tábua das Lagoas & Marés</span>
+          </button>
+
+          <button onclick="openInviteModal()" class="col-span-2 sm:col-span-1 px-3 sm:px-4 py-3 rounded-xl bg-black/40 hover:bg-black/60 text-zinc-200 font-semibold text-xs transition-all border border-white/20 active:scale-95 flex items-center justify-center space-x-1.5">
+            <i class="ph-bold ph-users text-base text-brand-300"></i>
+            <span>Convidar Amigo para o 4x4</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SUB-NAVEGAÇÃO FIXA -->
+    <div class="bg-white border-b border-surface-200 sticky top-14 sm:top-16 z-40 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex space-x-4 sm:space-x-8 overflow-x-auto py-2.5 sm:py-3 text-xs font-bold no-scrollbar scroll-smooth">
+          <button onclick="scrollToSection('saidas-hoje')" class="text-brand-800 border-b-2 border-brand-600 pb-1 flex items-center space-x-1.5 whitespace-nowrap shrink-0">
+            <i class="ph-bold ph-jeep text-brand-600 text-sm"></i>
+            <span>1. Passeios & Vagas em Tempo Real</span>
+          </button>
+          <button onclick="scrollToSection('personalizar-passeio')" class="text-surface-700 hover:text-brand-700 pb-1 flex items-center space-x-1.5 whitespace-nowrap shrink-0">
+            <i class="ph-bold ph-sliders-horizontal text-sm"></i>
+            <span>2. Personalizar Experiência Sob Medida</span>
+          </button>
+          <button onclick="scrollToSection('guia-ecoturista')" class="text-surface-700 hover:text-brand-700 pb-1 flex items-center space-x-1.5 whitespace-nowrap shrink-0">
+            <i class="ph-bold ph-backpack text-sm"></i>
+            <span>3. Guia 360° & O que Levar</span>
+          </button>
+          <button onclick="scrollToSection('meus-vouchers')" class="text-surface-700 hover:text-brand-700 pb-1 flex items-center space-x-1.5 whitespace-nowrap shrink-0">
+            <i class="ph-bold ph-qr-code text-sm"></i>
+            <span>4. Vouchers Offline com QR Code</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 1: CATÁLOGO VIVO DE PASSEIOS COM VAGAS EM TEMPO REAL -->
+    <section id="saidas-hoje" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-brand-700 uppercase bg-brand-50 px-2.5 py-1 rounded-md border border-brand-200">Saídas Confirmadas Hoje</span>
+          <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-surface-900 mt-2">Passeios nos Lençóis com Vagas Abertas</h2>
+          <p class="text-xs sm:text-sm text-surface-600 mt-1 max-w-2xl">Veículos 4x4 tracionados e lanchas voadeiras credenciados. Embarque direto na sua pousada em Barreirinhas ou Atins.</p>
+        </div>
+        <!-- Filtro Rápido -->
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="text-surface-500 font-medium">Filtrar:</span>
+          <button class="px-3 py-1.5 rounded-lg bg-surface-900 text-white font-bold">Todos</button>
+          <button class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300">4x4 Dunas</button>
+          <button class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300">Lancha Rio</button>
+          <button class="px-3 py-1.5 rounded-lg bg-surface-200 text-surface-700 font-semibold hover:bg-surface-300">Santo Amaro</button>
+        </div>
+      </div>
+
+      <!-- Grid de Passeios -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- CARD 1: CIRCUITO LAGOA BONITA 4X4 -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+          <div>
+            <div class="relative h-56 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80" alt="Lagoa Bonita" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-red-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1 animate-pulse">
+                <i class="ph-bold ph-fire"></i>
+                <span>Apenas 3 vagas para hoje!</span>
+              </div>
+              <div class="absolute bottom-3 left-3 bg-surface-950/80 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+                <i class="ph-fill ph-jeep text-brand-400 mr-1"></i> Toyota Hilux Jardineira
+              </div>
+              <div class="absolute top-3 right-3 bg-surface-950/70 text-amber-300 text-xs font-bold px-2.5 py-1 rounded-lg backdrop-blur-sm">
+                ★ 4.9 (428 avaliações)
+              </div>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-surface-500 mb-2">
+                <span>Saída: 14h00 (Tarde + Pôr do Sol)</span>
+                <span>Duração: 4h30</span>
+              </div>
+              <h3 class="font-display text-xl font-bold text-surface-900 group-hover:text-brand-700 transition-colors">
+                Circuito Lagoa Bonita & Pôr do Sol
+              </h3>
+              <p class="text-xs text-surface-600 mt-2 leading-relaxed">
+                Subida da duna de 30m com auxílio de corda, caminhada suave entre lagoas cristalinas e o mais espetacular pôr do sol de todo o Parque Nacional.
+              </p>
+
+              <!-- Inclusos -->
+              <div class="mt-4 pt-3 border-t border-surface-100 grid grid-cols-2 gap-2 text-[11px] text-surface-600">
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Pick-up na pousada</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Guia ICMBio Nativo</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Água mineral no 4x4</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Balsa do Rio Preguiças</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 pt-0">
+            <div class="flex items-baseline justify-between mb-4">
+              <div>
+                <span class="text-[11px] text-surface-500 block">Preço por passageiro</span>
+                <span class="font-display text-2xl font-black text-surface-900">R$ 150<span class="text-xs font-normal text-surface-500">/pessoa</span></span>
+              </div>
+              <span class="text-[11px] text-brand-700 bg-brand-50 font-bold px-2 py-0.5 rounded border border-brand-200">5% OFF no Pix</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="bookTourFast('Circuito Lagoa Bonita', 150)" class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-ticket"></i>
+                <span>Reservar Vaga</span>
+              </button>
+              <button onclick="customizeThisTour('Circuito Lagoa Bonita')" class="w-full py-2.5 rounded-xl bg-surface-100 hover:bg-surface-200 text-surface-800 text-xs font-bold transition-all border border-surface-300 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-sliders"></i>
+                <span>Fazer Privativo</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: SANTO AMARO • LAGOA DA GAIVOTA & BETÂNIA -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+          <div>
+            <div class="relative h-56 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80" alt="Santo Amaro" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
+                <i class="ph-bold ph-sparkle"></i>
+                <span>Lagoas mais profundas e azuis</span>
+              </div>
+              <div class="absolute bottom-3 left-3 bg-surface-950/80 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+                <i class="ph-fill ph-jeep text-brand-400 mr-1"></i> 4x4 Especial Tracionado
+              </div>
+              <div class="absolute top-3 right-3 bg-surface-950/70 text-amber-300 text-xs font-bold px-2.5 py-1 rounded-lg backdrop-blur-sm">
+                ★ 5.0 (312 avaliações)
+              </div>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-surface-500 mb-2">
+                <span>Saída: 08h30 (Dia Inteiro)</span>
+                <span>Duração: 8h00</span>
+              </div>
+              <h3 class="font-display text-xl font-bold text-surface-900 group-hover:text-brand-700 transition-colors">
+                Santo Amaro: Lagoa da Gaivota & Betânia
+              </h3>
+              <p class="text-xs text-surface-600 mt-2 leading-relaxed">
+                A experiência mais pura dos Lençóis. Lagoas gigantescas de água translúcida que chegam até a beira das dunas, com parada no povoado de Betânia.
+              </p>
+
+              <div class="mt-4 pt-3 border-t border-surface-100 grid grid-cols-2 gap-2 text-[11px] text-surface-600">
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Almoço regional incluso</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Travessia de barco típica</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Parada de fotos nas dunas</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Guia especializado</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 pt-0">
+            <div class="flex items-baseline justify-between mb-4">
+              <div>
+                <span class="text-[11px] text-surface-500 block">Preço por passageiro</span>
+                <span class="font-display text-2xl font-black text-surface-900">R$ 280<span class="text-xs font-normal text-surface-500">/pessoa</span></span>
+              </div>
+              <span class="text-[11px] text-brand-700 bg-brand-50 font-bold px-2 py-0.5 rounded border border-brand-200">Melhor Avaliado</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="bookTourFast('Santo Amaro Gaivota e Betânia', 280)" class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-ticket"></i>
+                <span>Reservar Vaga</span>
+              </button>
+              <button onclick="customizeThisTour('Santo Amaro Gaivota e Betânia')" class="w-full py-2.5 rounded-xl bg-surface-100 hover:bg-surface-200 text-surface-800 text-xs font-bold transition-all border border-surface-300 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-sliders"></i>
+                <span>Fazer Privativo</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: LANCHA VOADEIRA RIO PREGUIÇAS -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+          <div>
+            <div class="relative h-56 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Rio Preguiças e Caburé" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-lagoon-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
+                <i class="ph-bold ph-boat"></i>
+                <span>Passeio Náutico Clássico</span>
+              </div>
+              <div class="absolute bottom-3 left-3 bg-surface-950/80 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+                <i class="ph-fill ph-boat text-lagoon-400 mr-1"></i> Voadeira 115HP com Coletes
+              </div>
+              <div class="absolute top-3 right-3 bg-surface-950/70 text-amber-300 text-xs font-bold px-2.5 py-1 rounded-lg backdrop-blur-sm">
+                ★ 4.8 (580 avaliações)
+              </div>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-surface-500 mb-2">
+                <span>Saída: 08h30 (Manhã até 15h)</span>
+                <span>Duração: 6h30</span>
+              </div>
+              <h3 class="font-display text-xl font-bold text-surface-900 group-hover:text-brand-700 transition-colors">
+                Lancha Voadeira: Vassouras, Mandacaru & Caburé
+              </h3>
+              <p class="text-xs text-surface-600 mt-2 leading-relaxed">
+                Navegação rápida pelo Rio Preguiças. Visita aos macacos de Vassouras, vista 360° do topo do Farol de Mandacaru e banho de mar na península de Caburé.
+              </p>
+
+              <div class="mt-4 pt-3 border-t border-surface-100 grid grid-cols-2 gap-2 text-[11px] text-surface-600">
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Piloto habilitado Marinha</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Subida no Farol inclusa</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Parada em restaurantes</span></div>
+                <div class="flex items-center space-x-1.5"><i class="ph-bold ph-check text-brand-600"></i><span>Coletes homologados</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 pt-0">
+            <div class="flex items-baseline justify-between mb-4">
+              <div>
+                <span class="text-[11px] text-surface-500 block">Preço por passageiro</span>
+                <span class="font-display text-2xl font-black text-surface-900">R$ 130<span class="text-xs font-normal text-surface-500">/pessoa</span></span>
+              </div>
+              <span class="text-[11px] text-brand-700 bg-brand-50 font-bold px-2 py-0.5 rounded border border-brand-200">Ideal p/ Famílias</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="bookTourFast('Lancha Voadeira Rio Preguiças', 130)" class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-ticket"></i>
+                <span>Reservar Vaga</span>
+              </button>
+              <button onclick="customizeThisTour('Lancha Voadeira Rio Preguiças')" class="w-full py-2.5 rounded-xl bg-surface-100 hover:bg-surface-200 text-surface-800 text-xs font-bold transition-all border border-surface-300 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-sliders"></i>
+                <span>Fazer Privativo</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: ATINS SUNSET & CAMARÃO DO SR. ANTÔNIO -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+          <div>
+            <div class="relative h-56 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" alt="Atins Sunset" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
+                <i class="ph-bold ph-fork-knife"></i>
+                <span>Gastronomia & Charme</span>
+              </div>
+              <div class="absolute bottom-3 left-3 bg-surface-950/80 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+                <i class="ph-fill ph-jeep text-brand-400 mr-1"></i> 4x4 Exclusivo
+              </div>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-surface-500 mb-2">
+                <span>Saída: 09h00 ou 14h00</span>
+                <span>Duração: 6h00</span>
+              </div>
+              <h3 class="font-display text-xl font-bold text-surface-900 group-hover:text-brand-700 transition-colors">
+                Atins Chic, Lagoa da Capivara & Pôr do Sol
+              </h3>
+              <p class="text-xs text-surface-600 mt-2 leading-relaxed">
+                Descubra a vila rústico-chique de Atins, banhe-se na Lagoa da Capivara e encerre com o lendário camarão na brasa com molho secreto do Canto do Atins.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6 pt-0">
+            <div class="flex items-baseline justify-between mb-4">
+              <div>
+                <span class="text-[11px] text-surface-500 block">Preço por passageiro</span>
+                <span class="font-display text-2xl font-black text-surface-900">R$ 220<span class="text-xs font-normal text-surface-500">/pessoa</span></span>
+              </div>
+              <span class="text-[11px] text-brand-700 bg-brand-50 font-bold px-2 py-0.5 rounded border border-brand-200">Alta Procura</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="bookTourFast('Atins Sunset e Lagoa Capivara', 220)" class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-ticket"></i>
+                <span>Reservar Vaga</span>
+              </button>
+              <button onclick="customizeThisTour('Atins Sunset e Lagoa Capivara')" class="w-full py-2.5 rounded-xl bg-surface-100 hover:bg-surface-200 text-surface-800 text-xs font-bold transition-all border border-surface-300 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-sliders"></i>
+                <span>Fazer Privativo</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 5: VOO PANORÂMICO DE MONOMOTOR -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-surface-200 shadow-md hover:shadow-xl transition-all group flex flex-col justify-between">
+          <div>
+            <div class="relative h-56 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Voo Panorâmico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-3 left-3 bg-purple-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
+                <i class="ph-bold ph-airplane-takeoff"></i>
+                <span>Experiência VIP Inesquecível</span>
+              </div>
+              <div class="absolute bottom-3 left-3 bg-surface-950/80 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+                <i class="ph-fill ph-airplane text-purple-400 mr-1"></i> Aeronave Cessna Homologada
+              </div>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-surface-500 mb-2">
+                <span>Decolagem: Aeródromo Barreirinhas</span>
+                <span>Duração: 30 minutos de voo</span>
+              </div>
+              <h3 class="font-display text-xl font-bold text-surface-900 group-hover:text-brand-700 transition-colors">
+                Sobrevôo Panorâmico do Parque Nacional
+              </h3>
+              <p class="text-xs text-surface-600 mt-2 leading-relaxed">
+                A única maneira de ter a dimensão real do deserto branco e das centenas de lagoas esmeralda e turquesa. Fotos aéreas inacreditáveis com janelas panorâmicas.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6 pt-0">
+            <div class="flex items-baseline justify-between mb-4">
+              <div>
+                <span class="text-[11px] text-surface-500 block">Preço por passageiro</span>
+                <span class="font-display text-2xl font-black text-surface-900">R$ 550<span class="text-xs font-normal text-surface-500">/pessoa</span></span>
+              </div>
+              <span class="text-[11px] text-purple-700 bg-purple-50 font-bold px-2 py-0.5 rounded border border-purple-200">Exclusivo</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="bookTourFast('Voo Panorâmico 30min', 550)" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-ticket"></i>
+                <span>Reservar Vaga</span>
+              </button>
+              <button onclick="customizeThisTour('Voo Panorâmico 30min')" class="w-full py-2.5 rounded-xl bg-surface-100 hover:bg-surface-200 text-surface-800 text-xs font-bold transition-all border border-surface-300 flex items-center justify-center space-x-1">
+                <i class="ph-bold ph-sliders"></i>
+                <span>Fazer Privativo</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEÇÃO 2: MÓDULO DE PERSONALIZAÇÃO DE PASSEIO -->
+    <!-- ========================================== -->
+    <section id="personalizar-passeio" class="py-12 sm:py-16 bg-surface-900 text-white relative overflow-hidden">
+      <!-- Glow de fundo -->
+      <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-lagoon-500/20 rounded-full blur-3xl"></div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <span class="text-xs font-bold tracking-widest text-brand-400 uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Configurador Exclusivo de Passeios</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-extrabold mt-3">Personalize Sua Expedição nos Lençóis</h2>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-2">Escolha entre carro privativo ou compartilhado, adicione mimos de luxo como cooler com espumante e ensaio com drone, e receba o valor na hora com 5% de desconto no Pix.</p>
+        </div>
+
+        <div class="bg-surface-950/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Formulário Interativo de Personalização (8 Colunas) -->
+          <div class="lg:col-span-8 space-y-6">
+            
+            <!-- Etapa 1: Passeio Base -->
+            <div>
+              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">1. Escolha o Circuito Desejado</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button type="button" onclick="selectBaseTour('Lagoa Bonita', 150, 950)" class="btn-tour-option p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/10 text-left transition-all flex flex-col justify-between">
+                  <span class="font-bold text-sm block">Lagoa Bonita (Tarde)</span>
+                  <span class="text-xs text-brand-300 mt-1 font-semibold">R$ 150/pessoa • Privativo R$ 950</span>
+                </button>
+                <button type="button" onclick="selectBaseTour('Santo Amaro', 280, 1600)" class="btn-tour-option p-4 rounded-2xl border border-white/15 bg-white/5 text-left transition-all hover:bg-white/10 flex flex-col justify-between">
+                  <span class="font-bold text-sm block">Santo Amaro (Dia Todo)</span>
+                  <span class="text-xs text-zinc-400 mt-1">R$ 280/pessoa • Privativo R$ 1.600</span>
+                </button>
+                <button type="button" onclick="selectBaseTour('Rio Preguiças', 130, 850)" class="btn-tour-option p-4 rounded-2xl border border-white/15 bg-white/5 text-left transition-all hover:bg-white/10 flex flex-col justify-between">
+                  <span class="font-bold text-sm block">Lancha Voadeira Caburé</span>
+                  <span class="text-xs text-zinc-400 mt-1">R$ 130/pessoa • Lancha Privativa R$ 850</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Etapa 2: Compartilhado vs Privativo -->
+            <div>
+              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">2. Modalidade do Veículo / Grupo</label>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="flex items-center space-x-3 p-4 rounded-2xl border border-white/15 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                  <input type="radio" name="tour_type" value="shared" checked onchange="calculateCustomTour()" class="w-4 h-4 text-brand-500 focus:ring-brand-500">
+                  <div>
+                    <span class="font-bold text-xs sm:text-sm block">Grupo Compartilhado</span>
+                    <span class="text-[11px] text-zinc-400">Você paga apenas pelos seus assentos no 4x4</span>
+                  </div>
+                </label>
+
+                <label class="flex items-center space-x-3 p-4 rounded-2xl border border-brand-500/50 bg-brand-500/10 cursor-pointer hover:bg-brand-500/20 transition-colors">
+                  <input type="radio" name="tour_type" value="private" onchange="calculateCustomTour()" class="w-4 h-4 text-brand-500 focus:ring-brand-500">
+                  <div>
+                    <span class="font-bold text-xs sm:text-sm block text-brand-300">Veículo 4x4 100% Privativo</span>
+                    <span class="text-[11px] text-zinc-300">Carro exclusivo para sua família/casal (até 6 pessoas)</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Etapa 3: Quantidade de Pessoas e Pousada -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">Número de Pessoas</label>
+                <div class="flex items-center space-x-3 bg-white/5 border border-white/15 rounded-2xl p-2">
+                  <button type="button" onclick="adjustPax(-1)" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 font-bold flex items-center justify-center text-lg">-</button>
+                  <span id="custom-pax-count" class="font-display font-bold text-xl flex-1 text-center">2</span>
+                  <button type="button" onclick="adjustPax(1)" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 font-bold flex items-center justify-center text-lg">+</button>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">Pousada de Saída (Pick-up)</label>
+                <input type="text" id="custom-hotel" value="Pousada Porto Preguiças" placeholder="Nome da sua pousada em Barreirinhas ou Atins" class="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-brand-500">
+              </div>
+            </div>
+
+            <!-- Etapa 4: Add-ons e Experiências VIP (Upsell da Empresa de Passeio) -->
+            <div>
+              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">3. Adicionais & Mimos de Experiência (Opcional)</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                  <input type="checkbox" id="addon-cooler" value="180" onchange="calculateCustomTour()" class="w-4 h-4 rounded text-brand-500 focus:ring-brand-500">
+                  <div class="text-xs">
+                    <span class="font-bold text-white block">Cooler VIP com Espumante nas Dunas</span>
+                    <span class="text-zinc-400 text-[11px]">+ R$ 180 (Espumante gelado, taças e castanhas)</span>
+                  </div>
+                </label>
+
+                <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                  <input type="checkbox" id="addon-drone" value="380" onchange="calculateCustomTour()" class="w-4 h-4 rounded text-brand-500 focus:ring-brand-500">
+                  <div class="text-xs">
+                    <span class="font-bold text-white block">Ensaio de Fotos & Drone Profissional</span>
+                    <span class="text-zinc-400 text-[11px]">+ R$ 380 (40 fotos tratadas + 2 vídeos reels)</span>
+                  </div>
+                </label>
+
+                <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                  <input type="checkbox" id="addon-sandboard" value="50" onchange="calculateCustomTour()" class="w-4 h-4 rounded text-brand-500 focus:ring-brand-500">
+                  <div class="text-xs">
+                    <span class="font-bold text-white block">Pranchas de Sandboard nas Dunas</span>
+                    <span class="text-zinc-400 text-[11px]">+ R$ 50 (2 pranchas com cera e instrução)</span>
+                  </div>
+                </label>
+
+                <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                  <input type="checkbox" id="addon-sunrise" value="120" onchange="calculateCustomTour()" class="w-4 h-4 rounded text-brand-500 focus:ring-brand-500">
+                  <div class="text-xs">
+                    <span class="font-bold text-white block">Saída Especial Aurora (05h00)</span>
+                    <span class="text-zinc-400 text-[11px]">+ R$ 120 (Parque vazio para o nascer do sol)</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Resumo de Compra & Fechamento no WhatsApp (4 Colunas) -->
+          <div class="lg:col-span-4 bg-surface-900 rounded-2xl p-6 border border-white/15 space-y-5 sticky top-24">
+            <div>
+              <span class="text-[10px] font-bold tracking-widest text-brand-400 uppercase">Resumo da Sua Experiência</span>
+              <h3 id="summary-tour-title" class="font-display text-xl font-bold text-white mt-1">Circuito Lagoa Bonita</h3>
+              <p id="summary-tour-type" class="text-xs text-zinc-400 mt-0.5">Grupo Compartilhado • 2 passageiros</p>
+            </div>
+
+            <!-- Detalhamento de Valores -->
+            <div class="space-y-2 text-xs border-y border-white/10 py-3">
+              <div class="flex justify-between text-zinc-300">
+                <span>Valor Base do Passeio:</span>
+                <span id="summary-base-price" class="font-bold text-white">R$ 300,00</span>
+              </div>
+              <div class="flex justify-between text-zinc-300">
+                <span>Adicionais & Mimos:</span>
+                <span id="summary-addons-price" class="font-bold text-white">R$ 0,00</span>
+              </div>
+              <div class="flex justify-between text-brand-300 font-semibold">
+                <span>Desconto Pix (5%):</span>
+                <span id="summary-discount">- R$ 15,00</span>
+              </div>
+            </div>
+
+            <!-- Total Final -->
+            <div>
+              <span class="text-[11px] text-zinc-400 block">Investimento Total no Pix</span>
+              <div class="flex items-baseline space-x-2">
+                <span id="summary-total-price" class="font-display text-3xl font-extrabold text-white">R$ 285,00</span>
+                <span class="text-xs text-zinc-400">à vista</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 mt-1">ou 3x de R$ 100 sem juros no cartão de crédito.</p>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="space-y-2.5 pt-2">
+              <button onclick="openPixModal()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-lagoon-600 hover:from-brand-500 text-white font-extrabold text-xs transition-all shadow-lg active:scale-95 flex items-center justify-center space-x-2">
+                <i class="ph-bold ph-qr-code text-base"></i>
+                <span>Garantir Reserva Imediata com Pix</span>
+              </button>
+
+              <button onclick="sendCustomizedWhatsApp()" class="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition-all border border-white/20 flex items-center justify-center space-x-2">
+                <i class="ph-bold ph-whatsapp-logo text-emerald-400 text-base"></i>
+                <span>Enviar Cotação no WhatsApp</span>
+              </button>
+            </div>
+
+            <div class="flex items-center space-x-2 text-[11px] text-zinc-400 pt-1">
+              <i class="ph-fill ph-shield-check text-brand-400 text-base"></i>
+              <span>Cancelamento grátis até 24h antes do passeio.</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEÇÃO 3: GUIA 360° & DICAS DE ECOTURISMO -->
+    <!-- ========================================== -->
+    <section id="guia-ecoturista" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <span class="text-xs font-bold tracking-widest text-brand-700 uppercase bg-brand-50 px-2.5 py-1 rounded-md border border-brand-200">Guia de Bolso do Turista</span>
+        <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-surface-900 mt-2">Tudo o Que Você Precisa Saber Antes de Embarcar</h2>
+        <p class="text-xs sm:text-sm text-surface-600 mt-1">Informações práticas para aproveitar o Parque Nacional com máximo conforto e segurança.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- CARD 1: TÁBUA DE CHEIA DAS LAGOAS -->
+        <div class="bg-white p-6 rounded-3xl border border-surface-200 shadow-sm space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-lagoon-100 flex items-center justify-center text-lagoon-700 text-2xl">
+            <i class="ph-fill ph-drop"></i>
+          </div>
+          <div>
+            <h3 class="font-display text-lg font-bold text-surface-900">Monitor de Cheia das Lagoas</h3>
+            <p class="text-xs text-surface-600 mt-1">Nível atual das lagoas no Parque Nacional dos Lençóis Maranhenses.</p>
+          </div>
+          
+          <div class="space-y-2 pt-2">
+            <div class="flex justify-between text-xs font-bold">
+              <span>Capacidade Atual</span>
+              <span class="text-brand-600">96% (Cheia Plena)</span>
+            </div>
+            <div class="w-full h-3 bg-surface-100 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-lagoon-500 to-brand-500 rounded-full" style="width: 96%"></div>
+            </div>
+            <p class="text-[11px] text-surface-500">Período perfeito para banho. Todas as lagoas principais com água translúcida e temperatura em torno de 28°C.</p>
+          </div>
+        </div>
+
+        <!-- CARD 2: O QUE LEVAR NA MOCHILA -->
+        <div class="bg-white p-6 rounded-3xl border border-surface-200 shadow-sm space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center text-brand-700 text-2xl">
+            <i class="ph-fill ph-backpack"></i>
+          </div>
+          <div>
+            <h3 class="font-display text-lg font-bold text-surface-900">O que Levar na Mochila</h3>
+            <p class="text-xs text-surface-600 mt-1">Itens indispensáveis para o dia a dia nas dunas.</p>
+          </div>
+
+          <ul class="space-y-2 text-xs text-surface-700">
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-check text-brand-600"></i><span>Óculos escuros com cordinha (vento forte nas dunas)</span></li>
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-check text-brand-600"></i><span>Protetor solar biodegradável e camisa UV</span></li>
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-check text-brand-600"></i><span>Chinelo ou papete (para descer do 4x4)</span></li>
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-check text-brand-600"></i><span>Saco impermeável para celular</span></li>
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-check text-brand-600"></i><span>Garrafa térmica com água gelada</span></li>
+          </ul>
+        </div>
+
+        <!-- CARD 3: REGRAS E SUSTENTABILIDADE ICMBIO -->
+        <div class="bg-white p-6 rounded-3xl border border-surface-200 shadow-sm space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-700 text-2xl">
+            <i class="ph-fill ph-tree"></i>
+          </div>
+          <div>
+            <h3 class="font-display text-lg font-bold text-surface-900">Regras do Parque Nacional</h3>
+            <p class="text-xs text-surface-600 mt-1">Preserve o ecossistema único dos Lençóis.</p>
+          </div>
+
+          <ul class="space-y-2 text-xs text-surface-700">
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-x text-red-500"></i><span>Proibido caixas de som nas dunas e lagoas</span></li>
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-x text-red-500"></i><span>Proibido bebidas alcoólicas dentro do parque</span></li>
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-check text-brand-600"></i><span>Traga todo o seu lixo de volta ao veículo</span></li>
+            <li class="flex items-center space-x-2"><i class="ph-bold ph-check text-brand-600"></i><span>Ande sempre acompanhado de guia credenciado</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SEÇÃO 4: MEUS VOUCHERS OFFLINE COM QR CODE -->
+    <!-- ========================================== -->
+    <section id="meus-vouchers" class="py-12 sm:py-16 bg-surface-100 border-t border-surface-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-8">
+          <span class="text-xs font-bold tracking-widest text-brand-700 uppercase bg-white px-3 py-1 rounded-full border border-surface-200">Embarque Inteligente</span>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-surface-900 mt-2">Seu Voucher Digital de Passeio</h2>
+          <p class="text-xs sm:text-sm text-surface-600 mt-1">Apresente este voucher ao motorista na recepção da sua pousada. Funciona 100% offline mesmo sem sinal nas dunas.</p>
+        </div>
+
+        <!-- Voucher Card Estilo Cartão de Embarque -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border border-surface-200">
+          
+          <!-- Topo do Voucher -->
+          <div class="bg-gradient-to-r from-surface-950 via-surface-900 to-brand-950 text-white p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <span class="text-[10px] bg-brand-500/20 text-brand-300 font-bold px-2.5 py-1 rounded-full border border-brand-500/30 uppercase tracking-widest">Reserva Confirmada • Pago</span>
+              <h3 class="font-display text-2xl font-bold mt-2">Circuito Lagoa Bonita & Pôr do Sol</h3>
+              <p class="text-xs text-zinc-300">Expedição em Toyota Hilux 4x4 • 2 Passageiros</p>
+            </div>
+            <div class="text-left sm:text-right">
+              <span class="text-[11px] text-zinc-400 block">Código da Reserva</span>
+              <span class="font-mono font-bold text-lg text-brand-400">VP-LENCOIS-8842</span>
+            </div>
+          </div>
+
+          <!-- Meio do Voucher com Detalhes e QR Code -->
+          <div class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            
+            <div class="md:col-span-2 grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <span class="text-surface-500 font-medium block">Titular da Reserva:</span>
+                <span class="font-bold text-surface-900 text-sm">Rubens Lóss (+1 acompanhante)</span>
+              </div>
+              <div>
+                <span class="text-surface-500 font-medium block">Data do Passeio:</span>
+                <span class="font-bold text-surface-900 text-sm">Hoje • Saída 14h00</span>
+              </div>
+              <div>
+                <span class="text-surface-500 font-medium block">Local de Pick-up:</span>
+                <span class="font-bold text-surface-900 text-sm">Pousada Porto Preguiças (Recepção)</span>
+              </div>
+              <div>
+                <span class="text-surface-500 font-medium block">Horário de Embarque:</span>
+                <span class="font-bold text-brand-700 text-sm">13h45 às 14h00</span>
+              </div>
+              <div>
+                <span class="text-surface-500 font-medium block">Guia Designado:</span>
+                <span class="font-bold text-surface-900 text-sm">Nonato Maranhense (ICMBio #441)</span>
+              </div>
+              <div>
+                <span class="text-surface-500 font-medium block">Veículo Designado:</span>
+                <span class="font-bold text-surface-900 text-sm">Toyota Hilux Jardineira #04</span>
+              </div>
+            </div>
+
+            <!-- QR Code do Embarque -->
+            <div class="flex flex-col items-center justify-center p-4 bg-surface-50 rounded-2xl border border-surface-200 text-center">
+              <canvas id="voucher-qrcode" class="w-32 h-32"></canvas>
+              <span class="text-[10px] text-surface-500 mt-2 font-mono">Validação Rápida Offline</span>
+            </div>
+
+          </div>
+
+          <!-- Rodapé do Voucher -->
+          <div class="bg-surface-50 px-6 py-4 border-t border-surface-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <span class="text-surface-600">Dúvidas? Ligue para o plantão: <strong>(98) 99123-4567</strong></span>
+            <div class="flex space-x-2">
+              <button onclick="simulateVoucherDownload()" class="px-3 py-1.5 bg-white border border-surface-300 hover:bg-surface-100 rounded-lg font-bold text-surface-700 flex items-center space-x-1">
+                <i class="ph-bold ph-download-simple"></i>
+                <span>Baixar Imagem</span>
+              </button>
+              <button onclick="shareVoucherWhatsApp()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold flex items-center space-x-1">
+                <i class="ph-bold ph-whatsapp-logo"></i>
+                <span>Enviar no WhatsApp</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- VISÃO RECEPTIVO / EMPRESA DE PASSEIOS -->
+  <!-- ========================================== -->
+  <main id="view-agency" class="hidden min-h-screen bg-surface-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <!-- Cabeçalho do Cockpit -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-white/10 gap-4">
+        <div>
+          <span class="text-xs font-bold tracking-widest text-brand-400 uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Cockpit Operacional • Lençóis Receptivo</span>
+          <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-2">Gestão de Saídas, Veículos & Faturamento</h1>
+          <p class="text-xs text-zinc-400">Controle de vagas em tempo real nas Toyota Hilux e Lanchas Voadeiras.</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button onclick="dispatchAllWhatsApps()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center space-x-1.5 shadow-md">
+            <i class="ph-bold ph-whatsapp-logo text-base"></i>
+            <span>Disparar Confirmação para Passageiros de Hoje (28)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Métricas em Tempo Real -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-surface-950 p-5 rounded-2xl border border-white/10">
+          <span class="text-xs text-zinc-400 block">Passageiros Agendados Hoje</span>
+          <span class="font-display text-3xl font-extrabold text-white mt-1 block">38</span>
+          <span class="text-[11px] text-brand-400 font-semibold mt-1 block">↑ 92% da lotação da frota</span>
+        </div>
+        <div class="bg-surface-950 p-5 rounded-2xl border border-white/10">
+          <span class="text-xs text-zinc-400 block">Veículos em Operação</span>
+          <span class="font-display text-3xl font-extrabold text-white mt-1 block">5 Veículos</span>
+          <span class="text-[11px] text-zinc-400 mt-1 block">4 Hilux 4x4 + 1 Voadeira</span>
+        </div>
+        <div class="bg-surface-950 p-5 rounded-2xl border border-white/10">
+          <span class="text-xs text-zinc-400 block">Faturamento do Dia</span>
+          <span class="font-display text-3xl font-extrabold text-brand-400 mt-1 block">R$ 6.840</span>
+          <span class="text-[11px] text-zinc-400 mt-1 block">R$ 5.400 recebidos via Pix</span>
+        </div>
+        <div class="bg-surface-950 p-5 rounded-2xl border border-white/10">
+          <span class="text-xs text-zinc-400 block">Vagas Restantes no 4x4 (Tarde)</span>
+          <span class="font-display text-3xl font-extrabold text-amber-400 mt-1 block">3 Vagas</span>
+          <span class="text-[11px] text-amber-300 font-semibold mt-1 block">Lagoa Bonita (14h)</span>
+        </div>
+      </div>
+
+      <!-- Tabela de Saídas e Escalação de Guias -->
+      <div class="bg-surface-950 rounded-2xl p-6 border border-white/10 space-y-4">
+        <h3 class="font-display text-lg font-bold text-white">Escalação das Saídas de Hoje</h3>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-white/5 text-zinc-400 font-semibold">
+              <tr>
+                <th class="p-3">Veículo</th>
+                <th class="p-3">Circuito</th>
+                <th class="p-3">Horário</th>
+                <th class="p-3">Guia Responsável</th>
+                <th class="p-3">Ocupação</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Ação</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 text-zinc-200">
+              <tr>
+                <td class="p-3 font-bold text-white">Toyota Hilux #01</td>
+                <td class="p-3">Circuito Lagoa Bonita</td>
+                <td class="p-3">14h00</td>
+                <td class="p-3">Nonato Maranhense</td>
+                <td class="p-3"><span class="text-red-400 font-bold">5 / 8</span> (Restam 3)</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">Confirmada</span></td>
+                <td class="p-3"><button onclick="viewManifest('Hilux #01')" class="text-brand-400 font-bold hover:underline">Ver Lista Pick-up</button></td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-white">Toyota Hilux #02</td>
+                <td class="p-3">Santo Amaro (Gaivota & Betânia)</td>
+                <td class="p-3">08h30</td>
+                <td class="p-3">Raimundo Santos</td>
+                <td class="p-3"><span class="text-emerald-400 font-bold">6 / 6</span> (LOTADA)</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold">Em Rota</span></td>
+                <td class="p-3"><button onclick="viewManifest('Hilux #02')" class="text-brand-400 font-bold hover:underline">Ver Lista Pick-up</button></td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-white">Lancha Voadeira #01</td>
+                <td class="p-3">Rio Preguiças até Caburé</td>
+                <td class="p-3">08h30</td>
+                <td class="p-3">Mestre Zé Carlos</td>
+                <td class="p-3"><span class="text-emerald-400 font-bold">10 / 10</span> (LOTADA)</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold">Em Rota</span></td>
+                <td class="p-3"><button onclick="viewManifest('Voadeira #01')" class="text-brand-400 font-bold hover:underline">Ver Lista Pick-up</button></td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-white">Toyota Hilux #03 (Privativa)</td>
+                <td class="p-3">Atins Sunset & Dunas Capivara</td>
+                <td class="p-3">14h00</td>
+                <td class="p-3">Silvio Guia</td>
+                <td class="p-3"><span class="text-purple-300 font-bold">Casal Privativo</span></td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-semibold">Privativo VIP</span></td>
+                <td class="p-3"><button onclick="viewManifest('Hilux #03')" class="text-brand-400 font-bold hover:underline">Ver Detalhes</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Rota Inteligente de Pick-up nas Pousadas -->
+      <div class="bg-surface-950 rounded-2xl p-6 border border-white/10 space-y-4">
+        <h3 class="font-display text-lg font-bold text-white">Ordem Otimizada de Pick-up • Hilux #01 (13h40 às 14h00)</h3>
+        <p class="text-xs text-zinc-400">Rota calculada por geolocalização para economizar tempo e combustível do veículo:</p>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 bg-white/5 rounded-xl border border-white/10 text-xs">
+            <div class="flex items-center space-x-3">
+              <span class="w-6 h-6 rounded-full bg-brand-500 text-white font-bold flex items-center justify-center text-xs">1</span>
+              <div>
+                <span class="font-bold text-white">13h40 • Pousada do Rio Barreirinhas</span>
+                <span class="text-zinc-400 block">Passageiros: Marcos e Camila (2 pessoas) • Apto 104</span>
+              </div>
+            </div>
+            <a href="https://api.whatsapp.com/send?phone=5598999999999&text=Oi%20Marcos!%20Nosso%204x4%20chega%20na%20sua%20pousada%20em%205%20minutos." target="_blank" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white font-bold text-[11px]">Avisar no WhatsApp</a>
+          </div>
+
+          <div class="flex items-center justify-between p-3 bg-white/5 rounded-xl border border-white/10 text-xs">
+            <div class="flex items-center space-x-3">
+              <span class="w-6 h-6 rounded-full bg-brand-500 text-white font-bold flex items-center justify-center text-xs">2</span>
+              <div>
+                <span class="font-bold text-white">13h50 • Pousada Porto Preguiças</span>
+                <span class="text-zinc-400 block">Passageiros: Rubens Lóss e Acompanhante (2 pessoas) • Chalé 12</span>
+              </div>
+            </div>
+            <a href="https://api.whatsapp.com/send?phone=5598999999999&text=Oi%20Rubens!%20Nosso%204x4%20chega%20na%20sua%20pousada%20em%205%20minutos." target="_blank" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white font-bold text-[11px]">Avisar no WhatsApp</a>
+          </div>
+
+          <div class="flex items-center justify-between p-3 bg-white/5 rounded-xl border border-white/10 text-xs">
+            <div class="flex items-center space-x-3">
+              <span class="w-6 h-6 rounded-full bg-brand-500 text-white font-bold flex items-center justify-center text-xs">3</span>
+              <div>
+                <span class="font-bold text-white">14h00 • Pousada Vila dos Lençóis</span>
+                <span class="text-zinc-400 block">Passageira: Juliana Torres (1 pessoa) • Quarto 06</span>
+              </div>
+            </div>
+            <a href="https://api.whatsapp.com/send?phone=5598999999999&text=Oi%20Juliana!%20Nosso%204x4%20chega%20na%20sua%20pousada%20em%205%20minutos." target="_blank" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white font-bold text-[11px]">Avisar no WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CONVIDAR AMIGO / FECHAR 4X4 EM GRUPO -->
+  <!-- ========================================== -->
+  <div id="modal-invite" class="fixed inset-0 z-50 bg-surface-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 border border-surface-300 shadow-2xl relative">
+      <button onclick="closeInviteModal()" class="absolute top-6 right-6 text-surface-400 hover:text-surface-900 text-xl">
+        <i class="ph-bold ph-x"></i>
+      </button>
+
+      <div>
+        <span class="text-xs font-bold tracking-widest text-brand-700 uppercase">Compartilhamento de Expedição</span>
+        <h3 class="font-display text-2xl font-bold text-surface-900 mt-1">Convidar Amigo para o 4x4</h3>
+        <p class="text-xs text-surface-600 mt-1">Envie o link das saídas dos Lençóis para os amigos ou hóspedes da sua pousada para dividirem um carro privativo!</p>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div class="p-3 bg-surface-50 rounded-xl border border-surface-200 space-y-1.5">
+          <label class="font-bold text-surface-900 block text-[11px] uppercase">Link de Compartilhamento</label>
+          <div class="flex items-center space-x-2">
+            <input type="text" id="invite-link-input" readonly value="https://rubensloss.github.io/vivant-pass/?ref=amigos_lencois" class="w-full bg-white px-3 py-2 rounded-lg border border-surface-300 text-surface-800 text-xs font-mono">
+            <button onclick="copyInviteLink()" class="px-4 py-2 bg-brand-700 hover:bg-brand-600 text-white font-bold rounded-lg whitespace-nowrap transition-colors">
+              Copiar
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-3 p-3 bg-brand-50 rounded-xl border border-brand-200 text-brand-900">
+          <i class="ph-fill ph-gift text-xl flex-shrink-0 text-brand-600"></i>
+          <span class="text-[11px] leading-relaxed">
+            Seus amigos ganham <strong>R$ 30 de desconto</strong> na primeira reserva de passeio, e você acumula créditos para a próxima saída!
+          </span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-3 pt-2">
+        <button onclick="closeInviteModal()" class="px-5 py-2.5 rounded-xl border border-surface-300 text-xs font-bold text-surface-800 hover:bg-surface-50">
+          Fechar
+        </button>
+        <a href="https://api.whatsapp.com/send?text=Oi!%20D%C3%A1%20uma%20olhada%20nos%20passeios%20nos%20Len%C3%A7%C3%B3is%20Maranhenses%20com%204x4%20e%20lagoas%20cheias:%20https://rubensloss.github.io/vivant-pass/" target="_blank" class="px-5 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-600 text-white text-xs font-bold flex items-center space-x-1.5 shadow-md">
+          <i class="ph-bold ph-whatsapp-logo text-sm"></i>
+          <span>Enviar direto no WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: PAGAMENTO PIX EXPRESS COM QR CODE -->
+  <!-- ========================================== -->
+  <div id="modal-pix" class="fixed inset-0 z-50 bg-surface-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 border border-surface-300 shadow-2xl relative text-center">
+      <button onclick="closePixModal()" class="absolute top-6 right-6 text-surface-400 hover:text-surface-900 text-xl">
+        <i class="ph-bold ph-x"></i>
+      </button>
+
+      <div>
+        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-2">
+          <i class="ph-bold ph-qr-code"></i>
+        </div>
+        <h3 class="font-display text-2xl font-bold text-surface-900">Pagamento Pix Instantâneo</h3>
+        <p class="text-xs text-surface-600 mt-1">Chave Pix dinâmica com 5% de desconto automático.</p>
+      </div>
+
+      <div class="p-4 bg-surface-50 rounded-2xl border border-surface-200 space-y-3">
+        <canvas id="pix-qrcode" class="w-40 h-40 mx-auto"></canvas>
+        <div class="text-center">
+          <span class="text-xs text-surface-500 block">Valor com desconto:</span>
+          <span id="pix-modal-value" class="font-display text-2xl font-extrabold text-brand-700">R$ 285,00</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <input type="text" id="pix-key-input" readonly value="00020126580014br.gov.bcb.pix0136vivantpass-lencois-7731" class="w-full bg-white px-3 py-2 rounded-lg border border-surface-300 text-xs font-mono text-surface-700">
+          <button onclick="copyPixKey()" class="px-4 py-2 bg-brand-700 hover:bg-brand-600 text-white font-bold rounded-lg text-xs whitespace-nowrap">
+            Copiar
+          </button>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-surface-500 space-y-1">
+        <p>Após a transferência, o seu voucher é gerado automaticamente em menos de 10 segundos!</p>
+      </div>
+
+      <div class="pt-2">
+        <button onclick="confirmPixPaid()" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl shadow-md">
+          Já Fiz a Transferência (Confirmar Reserva)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-28 opacity-0 transition-all duration-300 bg-surface-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border border-white/15 max-w-sm">
+    <i class="ph-fill ph-check-circle text-emerald-400 text-xl flex-shrink-0"></i>
+    <span id="toast-message" class="text-xs font-medium">Ação realizada com sucesso!</span>
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer class="bg-surface-950 text-white py-12 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-lagoon-500 flex items-center justify-center text-white font-bold text-sm">VP</div>
+          <div>
+            <span class="font-display font-bold text-base">VIVANT<span class="text-lagoon-400">PASS</span></span>
+            <p class="text-[11px] text-zinc-400">Plataforma Inteligente de Passeios & Receptivos Turísticos</p>
+          </div>
+        </div>
+        <div class="text-center md:text-right text-xs text-zinc-400 space-y-1">
+          <p>© 2026 VivantPass • Lençóis Maranhenses, Brasil. Todos os direitos reservados.</p>
+          <p class="text-[11px] text-zinc-500">Desenvolvido com tecnologia de Inteligência Artificial para Operadoras de Ecoturismo.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT: LÓGICA E INTERATIVIDADE COMPLETA -->
+  <!-- ========================================== -->
+  <script>
+    // Estado da Aplicação
+    let currentTour = {
+      name: 'Circuito Lagoa Bonita',
+      pricePerPax: 150,
+      privatePrice: 950,
+      isPrivate: false,
+      pax: 2,
+      addons: 0
+    };
+
+    // Inicialização ao carregar
+    window.addEventListener('DOMContentLoaded', () => {
+      // Gerar QR Code do Voucher
+      const canvasVoucher = document.getElementById('voucher-qrcode');
+      if (canvasVoucher && window.QRCode) {
+        QRCode.toCanvas(canvasVoucher, 'https://rubensloss.github.io/vivant-pass/voucher/VP-LENCOIS-8842', { width: 128, margin: 1 });
+      }
+
+      // Gerar QR Code do Pix
+      const canvasPix = document.getElementById('pix-qrcode');
+      if (canvasPix && window.QRCode) {
+        QRCode.toCanvas(canvasPix, '00020126580014br.gov.bcb.pix0136vivantpass-lencois-7731', { width: 160, margin: 1 });
+      }
+
+      // Suporte Tátil no Subtítulo para Celular
+      const sub = document.getElementById('interactive-subtitle');
+      if (sub) {
+        sub.addEventListener('touchstart', () => {
+          sub.classList.add('brightness-125', 'scale-[1.015]');
+          if (navigator.vibrate) navigator.vibrate(25);
+        }, { passive: true });
+        sub.addEventListener('touchend', () => {
+          setTimeout(() => {
+            sub.classList.remove('brightness-125', 'scale-[1.015]');
+          }, 350);
+        }, { passive: true });
+      }
+
+      calculateCustomTour();
+    });
+
+    // Alternar entre Modo Viajante e Modo Empresa (Cockpit)
+    function switchAppMode(mode) {
+      const viewTourist = document.getElementById('view-tourist');
+      const viewAgency = document.getElementById('view-agency');
+      const btnTourist = document.getElementById('btn-mode-tourist');
+      const btnAgency = document.getElementById('btn-mode-agency');
+
+      if (mode === 'tourist') {
+        viewTourist.classList.remove('hidden');
+        viewAgency.classList.add('hidden');
+        btnTourist.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold flex items-center space-x-1.5 transition-all bg-gradient-to-r from-brand-600 to-lagoon-600 text-white shadow-sm';
+        btnAgency.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 transition-all text-zinc-400 hover:text-white';
+        showToast('Modo Viajante: Selecione e reserve seus passeios.');
+      } else {
+        viewTourist.classList.add('hidden');
+        viewAgency.classList.remove('hidden');
+        btnAgency.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold flex items-center space-x-1.5 transition-all bg-gradient-to-r from-brand-600 to-lagoon-600 text-white shadow-sm';
+        btnTourist.className = 'px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 transition-all text-zinc-400 hover:text-white';
+        showToast('Modo Receptivo: Cockpit de gestão de frotas e saídas ativado.');
+      }
+    }
+
+    // Interação Tátil do Topo
+    function triggerHeroInteraction() {
+      const title = document.getElementById('hero-title');
+      const sub = document.getElementById('interactive-subtitle');
+      if (title) title.classList.add('scale-[1.015]', 'brightness-110');
+      if (sub) sub.classList.add('scale-[1.015]', 'brightness-125');
+      
+      if (navigator.vibrate) navigator.vibrate([35, 45, 35]);
+
+      setTimeout(() => {
+        if (title) title.classList.remove('scale-[1.015]', 'brightness-110');
+        if (sub) sub.classList.remove('scale-[1.015]', 'brightness-125');
+      }, 700);
+
+      showToast('Lençóis Maranhenses: Águas cristalinas e dunas infinitas ativadas!');
+    }
+
+    // Seleção de Circuito Base no Customizador
+    function selectBaseTour(name, perPax, privatePrice) {
+      currentTour.name = name;
+      currentTour.pricePerPax = perPax;
+      currentTour.privatePrice = privatePrice;
+
+      // Atualizar botões visuais
+      document.querySelectorAll('.btn-tour-option').forEach(btn => {
+        btn.classList.remove('border-2', 'border-brand-500', 'bg-brand-500/10');
+        btn.classList.add('border', 'border-white/15', 'bg-white/5');
+      });
+      event.currentTarget.classList.add('border-2', 'border-brand-500', 'bg-brand-500/10');
+
+      calculateCustomTour();
+      showToast('Circuito selecionado: ' + name);
+    }
+
+    // Ajustar Número de Passageiros
+    function adjustPax(delta) {
+      currentTour.pax = Math.max(1, Math.min(12, currentTour.pax + delta));
+      document.getElementById('custom-pax-count').textContent = currentTour.pax;
+      calculateCustomTour();
+    }
+
+    // Cálculo Dinâmico do Valor do Passeio Customizado
+    function calculateCustomTour() {
+      const tourTypeRadio = document.querySelector('input[name="tour_type"]:checked');
+      currentTour.isPrivate = tourTypeRadio && tourTypeRadio.value === 'private';
+
+      // Calcular Add-ons
+      let addonsSum = 0;
+      if (document.getElementById('addon-cooler')?.checked) addonsSum += 180;
+      if (document.getElementById('addon-drone')?.checked) addonsSum += 380;
+      if (document.getElementById('addon-sandboard')?.checked) addonsSum += 50;
+      if (document.getElementById('addon-sunrise')?.checked) addonsSum += 120;
+      currentTour.addons = addonsSum;
+
+      // Valor Base
+      let baseTotal = 0;
+      if (currentTour.isPrivate) {
+        baseTotal = currentTour.privatePrice;
+        document.getElementById('summary-tour-type').textContent = 'Veículo 4x4 100% Privativo • Até ' + currentTour.pax + ' pessoas';
+      } else {
+        baseTotal = currentTour.pricePerPax * currentTour.pax;
+        document.getElementById('summary-tour-type').textContent = 'Grupo Compartilhado • ' + currentTour.pax + ' passageiro(s)';
+      }
+
+      const subtotal = baseTotal + addonsSum;
+      const discount = Math.round(subtotal * 0.05);
+      const totalPix = subtotal - discount;
+
+      // Atualizar Resumo Visual
+      document.getElementById('summary-tour-title').textContent = currentTour.name;
+      document.getElementById('summary-base-price').textContent = 'R$ ' + baseTotal.toLocaleString('pt-BR') + ',00';
+      document.getElementById('summary-addons-price').textContent = 'R$ ' + addonsSum.toLocaleString('pt-BR') + ',00';
+      document.getElementById('summary-discount').textContent = '- R$ ' + discount.toLocaleString('pt-BR') + ',00';
+      document.getElementById('summary-total-price').textContent = 'R$ ' + totalPix.toLocaleString('pt-BR') + ',00';
+      document.getElementById('pix-modal-value').textContent = 'R$ ' + totalPix.toLocaleString('pt-BR') + ',00';
+    }
+
+    // Ir direto para o customizador a partir de um card
+    function customizeThisTour(tourName) {
+      scrollToSection('personalizar-passeio');
+      if (tourName.includes('Bonita')) selectBaseTour('Lagoa Bonita', 150, 950);
+      else if (tourName.includes('Santo Amaro')) selectBaseTour('Santo Amaro', 280, 1600);
+      else if (tourName.includes('Preguiças')) selectBaseTour('Rio Preguiças', 130, 850);
+      else selectBaseTour(tourName, 220, 1200);
+    }
+
+    // Reserva Rápida
+    function bookTourFast(name, price) {
+      currentTour.name = name;
+      currentTour.pricePerPax = price;
+      currentTour.pax = 2;
+      calculateCustomTour();
+      openPixModal();
+    }
+
+    // Enviar no WhatsApp com os detalhes customizados
+    function sendCustomizedWhatsApp() {
+      const hotel = document.getElementById('custom-hotel').value || 'Pousada em Barreirinhas';
+      const typeText = currentTour.isPrivate ? 'Veículo Privativo' : 'Compartilhado (' + currentTour.pax + ' pessoas)';
+      const total = document.getElementById('summary-total-price').textContent;
+      
+      const msg = `Oi! Gostaria de confirmar minha reserva nos Lençóis Maranhenses:\n\n` +
+                  `📍 Passeio: ${currentTour.name}\n` +
+                  `🚗 Formato: ${typeText}\n` +
+                  `🏨 Pousada para Pick-up: ${hotel}\n` +
+                  `💰 Valor no Pix: ${total}\n\n` +
+                  `Poderiam confirmar a vaga e o horário de saída?`;
+
+      window.open('https://api.whatsapp.com/send?phone=5598999999999&text=' + encodeURIComponent(msg), '_blank');
+    }
+
+    // Modais
+    function openInviteModal() {
+      document.getElementById('modal-invite').classList.remove('hidden');
+    }
+    function closeInviteModal() {
+      document.getElementById('modal-invite').classList.add('hidden');
+    }
+    function openPixModal() {
+      document.getElementById('modal-pix').classList.remove('hidden');
+    }
+    function closePixModal() {
+      document.getElementById('modal-pix').classList.add('hidden');
+    }
+    function openVoucherModal() {
+      scrollToSection('meus-vouchers');
+      showToast('Visualizando seu voucher de embarque.');
+    }
+    function openLagoonStatusModal() {
+      scrollToSection('guia-ecoturista');
+      showToast('Tábua de cheia: Lagoas com 96% de capacidade hídrica!');
+    }
+
+    // Ações Rápidas
+    function copyInviteLink() {
+      navigator.clipboard.writeText(document.getElementById('invite-link-input').value);
+      showToast('Link de convite copiado!');
+    }
+    function copyPixKey() {
+      navigator.clipboard.writeText(document.getElementById('pix-key-input').value);
+      showToast('Chave Pix copiada para a área de transferência!');
+    }
+    function confirmPixPaid() {
+      closePixModal();
+      showToast('🎉 Pagamento registrado! Seu voucher digital foi emitido e enviado no WhatsApp.');
+      scrollToSection('meus-vouchers');
+    }
+    function simulateVoucherDownload() {
+      showToast('Baixando imagem do voucher para o rolo de fotos do celular...');
+    }
+    function shareVoucherWhatsApp() {
+      window.open('https://api.whatsapp.com/send?text=Segue%20meu%20Voucher%20de%20embarque%20nos%20Len%C3%A7%C3%B3is%20Maranhenses:%20VP-LENCOIS-8842', '_blank');
+    }
+    function dispatchAllWhatsApps() {
+      showToast('📲 28 mensagens de confirmação de pick-up disparadas automaticamente com sucesso!');
+    }
+    function viewManifest(vehicle) {
+      showToast('Abrindo manifesto de passageiros do ' + vehicle);
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').textContent = msg;
+      toast.classList.remove('translate-y-28', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-28', 'opacity-0');
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
