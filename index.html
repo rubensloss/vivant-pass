@@ -616,67 +616,195 @@
           <!-- Formulário Interativo de Personalização (8 Colunas) -->
           <div class="lg:col-span-8 space-y-6">
             
-            <!-- Etapa 1: Passeio Base -->
+            <!-- Etapa 1: Circuitos Desejados (Multi-Seleção) -->
             <div>
-              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">1. Escolha o Circuito Desejado</label>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <button type="button" onclick="selectBaseTour('Lagoa Bonita', 150, 950)" class="btn-tour-option p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/10 text-left transition-all flex flex-col justify-between">
-                  <span class="font-bold text-sm block">Lagoa Bonita (Tarde)</span>
-                  <span class="text-xs text-brand-300 mt-1 font-semibold">R$ 150/pessoa • Privativo R$ 950</span>
-                </button>
-                <button type="button" onclick="selectBaseTour('Santo Amaro', 280, 1600)" class="btn-tour-option p-4 rounded-2xl border border-white/15 bg-white/5 text-left transition-all hover:bg-white/10 flex flex-col justify-between">
-                  <span class="font-bold text-sm block">Santo Amaro (Dia Todo)</span>
-                  <span class="text-xs text-zinc-400 mt-1">R$ 280/pessoa • Privativo R$ 1.600</span>
-                </button>
-                <button type="button" onclick="selectBaseTour('Rio Preguiças', 130, 850)" class="btn-tour-option p-4 rounded-2xl border border-white/15 bg-white/5 text-left transition-all hover:bg-white/10 flex flex-col justify-between">
-                  <span class="font-bold text-sm block">Lancha Voadeira Caburé</span>
-                  <span class="text-xs text-zinc-400 mt-1">R$ 130/pessoa • Lancha Privativa R$ 850</span>
-                </button>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
+                  1. Escolha os Circuitos Desejados <span class="text-brand-400 font-normal lowercase">(marque 1 ou mais opções)</span>
+                </label>
+                <span id="selected-circuits-badge" class="font-mono text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30">
+                  2 selecionados
+                </span>
+              </div>
+              <p class="text-[11px] text-zinc-400 mb-3 leading-relaxed">
+                Monte seu roteiro completo nos Lençóis Maranhenses. Selecione quantos passeios desejar para compor sua viagem:
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="circuits-container">
+                <!-- Circuit 1: Lagoa Bonita -->
+                <div onclick="toggleCircuit('lagoa-bonita')" id="card-circuit-lagoa-bonita" class="circuit-checkbox-card p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/15 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400 relative ring-1 ring-brand-500/30">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-brand-400/20 text-brand-300 font-mono">Tarde · Pôr do Sol</span>
+                      <div class="circuit-check-indicator w-5 h-5 rounded-md bg-brand-500 text-white flex items-center justify-center text-xs shadow-sm">
+                        <i class="ph-bold ph-check"></i>
+                      </div>
+                    </div>
+                    <span class="font-display font-bold text-sm block text-white">Lagoa Bonita & Duna 30m</span>
+                    <span class="text-[11px] text-zinc-300 block mt-1">Dunas imensas e o pôr do sol mais famoso.</span>
+                  </div>
+                  <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs">
+                    <span class="text-brand-300 font-bold font-mono">R$ 150<span class="text-[10px] text-zinc-400 font-normal">/pax</span></span>
+                    <span class="text-[10px] text-zinc-400">Privativo R$ 950</span>
+                  </div>
+                </div>
+
+                <!-- Circuit 2: Santo Amaro -->
+                <div onclick="toggleCircuit('santo-amaro')" id="card-circuit-santo-amaro" class="circuit-checkbox-card p-4 rounded-2xl border border-white/15 bg-white/5 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400/50 hover:bg-white/10 relative">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-lagoon-400/20 text-lagoon-300 font-mono">Dia Todo · 8h</span>
+                      <div class="circuit-check-indicator w-5 h-5 rounded-md bg-white/10 text-transparent flex items-center justify-center text-xs border border-white/20">
+                        <i class="ph-bold ph-check"></i>
+                      </div>
+                    </div>
+                    <span class="font-display font-bold text-sm block text-white">Santo Amaro (Gaivota & Betânia)</span>
+                    <span class="text-[11px] text-zinc-300 block mt-1">As lagoas mais azuis e profundas da região.</span>
+                  </div>
+                  <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs">
+                    <span class="text-brand-300 font-bold font-mono">R$ 280<span class="text-[10px] text-zinc-400 font-normal">/pax</span></span>
+                    <span class="text-[10px] text-zinc-400">Privativo R$ 1.600</span>
+                  </div>
+                </div>
+
+                <!-- Circuit 3: Rio Preguiças -->
+                <div onclick="toggleCircuit('rio-preguicas')" id="card-circuit-rio-preguicas" class="circuit-checkbox-card p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/15 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400 relative ring-1 ring-brand-500/30">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-emerald-400/20 text-emerald-300 font-mono">Manhã · Lancha</span>
+                      <div class="circuit-check-indicator w-5 h-5 rounded-md bg-brand-500 text-white flex items-center justify-center text-xs shadow-sm">
+                        <i class="ph-bold ph-check"></i>
+                      </div>
+                    </div>
+                    <span class="font-display font-bold text-sm block text-white">Lancha Voadeira Caburé</span>
+                    <span class="text-[11px] text-zinc-300 block mt-1">Vassouras, Farol de Mandacaru e Caburé.</span>
+                  </div>
+                  <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs">
+                    <span class="text-brand-300 font-bold font-mono">R$ 130<span class="text-[10px] text-zinc-400 font-normal">/pax</span></span>
+                    <span class="text-[10px] text-zinc-400">Privativo R$ 850</span>
+                  </div>
+                </div>
+
+                <!-- Circuit 4: Lagoa Azul -->
+                <div onclick="toggleCircuit('lagoa-azul')" id="card-circuit-lagoa-azul" class="circuit-checkbox-card p-4 rounded-2xl border border-white/15 bg-white/5 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400/50 hover:bg-white/10 relative">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-blue-400/20 text-blue-300 font-mono">Manhã · Clássico</span>
+                      <div class="circuit-check-indicator w-5 h-5 rounded-md bg-white/10 text-transparent flex items-center justify-center text-xs border border-white/20">
+                        <i class="ph-bold ph-check"></i>
+                      </div>
+                    </div>
+                    <span class="font-display font-bold text-sm block text-white">Circuito Lagoa Azul & Peixe</span>
+                    <span class="text-[11px] text-zinc-300 block mt-1">Lagoas da Esmeralda, Peixe e banho refrescante.</span>
+                  </div>
+                  <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs">
+                    <span class="text-brand-300 font-bold font-mono">R$ 140<span class="text-[10px] text-zinc-400 font-normal">/pax</span></span>
+                    <span class="text-[10px] text-zinc-400">Privativo R$ 890</span>
+                  </div>
+                </div>
+
+                <!-- Circuit 5: Atins Sunset -->
+                <div onclick="toggleCircuit('atins-sunset')" id="card-circuit-atins-sunset" class="circuit-checkbox-card p-4 rounded-2xl border border-white/15 bg-white/5 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400/50 hover:bg-white/10 relative">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-mono">Tarde · Gastronomia</span>
+                      <div class="circuit-check-indicator w-5 h-5 rounded-md bg-white/10 text-transparent flex items-center justify-center text-xs border border-white/20">
+                        <i class="ph-bold ph-check"></i>
+                      </div>
+                    </div>
+                    <span class="font-display font-bold text-sm block text-white">Atins Chic & Canto do Atins</span>
+                    <span class="text-[11px] text-zinc-300 block mt-1">Lagoa da Capivara e camarão grelhado na praia.</span>
+                  </div>
+                  <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs">
+                    <span class="text-brand-300 font-bold font-mono">R$ 220<span class="text-[10px] text-zinc-400 font-normal">/pax</span></span>
+                    <span class="text-[10px] text-zinc-400">Privativo R$ 1.350</span>
+                  </div>
+                </div>
+
+                <!-- Circuit 6: Voo Panoramico -->
+                <div onclick="toggleCircuit('voo-panoramico')" id="card-circuit-voo-panoramico" class="circuit-checkbox-card p-4 rounded-2xl border border-white/15 bg-white/5 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400/50 hover:bg-white/10 relative">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-purple-400/20 text-purple-300 font-mono">Aéreo · 30min</span>
+                      <div class="circuit-check-indicator w-5 h-5 rounded-md bg-white/10 text-transparent flex items-center justify-center text-xs border border-white/20">
+                        <i class="ph-bold ph-check"></i>
+                      </div>
+                    </div>
+                    <span class="font-display font-bold text-sm block text-white">Voo Panorâmico Monomotor</span>
+                    <span class="text-[11px] text-zinc-300 block mt-1">Vista aérea cinematográfica de todo o parque.</span>
+                  </div>
+                  <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs">
+                    <span class="text-purple-300 font-bold font-mono">R$ 550<span class="text-[10px] text-zinc-400 font-normal">/pax</span></span>
+                    <span class="text-[10px] text-zinc-400">Voo Regular</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Etapa 2: Compartilhado vs Privativo -->
+            <!-- Etapa 2: Data da Viagem, Pessoas e Pousada -->
             <div>
-              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">2. Modalidade do Veículo / Grupo</label>
-              <div class="grid grid-cols-2 gap-3">
+              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">
+                2. Data Prevista, Passageiros & Pousada
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <!-- Data -->
+                <div>
+                  <label class="text-[11px] text-zinc-400 block mb-1.5 flex items-center gap-1 font-medium">
+                    <i class="ph-bold ph-calendar text-brand-400"></i> Data do 1º Passeio
+                  </label>
+                  <input type="date" id="custom-date" onchange="calculateCustomTour()" class="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand-500 [color-scheme:dark]">
+                  <span class="text-[10px] text-zinc-500 block mt-1">Início da sua expedição</span>
+                </div>
+
+                <!-- Quantidade de Pessoas -->
+                <div>
+                  <label class="text-[11px] text-zinc-400 block mb-1.5 flex items-center gap-1 font-medium">
+                    <i class="ph-bold ph-users text-brand-400"></i> Número de Passageiros
+                  </label>
+                  <div class="flex items-center space-x-3 bg-white/5 border border-white/15 rounded-2xl p-1.5 h-[46px]">
+                    <button type="button" onclick="adjustPax(-1)" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 font-bold flex items-center justify-center text-lg">-</button>
+                    <span id="custom-pax-count" class="font-display font-bold text-lg flex-1 text-center">2</span>
+                    <button type="button" onclick="adjustPax(1)" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 font-bold flex items-center justify-center text-lg">+</button>
+                  </div>
+                  <span class="text-[10px] text-zinc-500 block mt-1">Adultos e crianças</span>
+                </div>
+
+                <!-- Pousada / Pick-up -->
+                <div>
+                  <label class="text-[11px] text-zinc-400 block mb-1.5 flex items-center gap-1 font-medium">
+                    <i class="ph-bold ph-buildings text-brand-400"></i> Pousada de Pick-up
+                  </label>
+                  <input type="text" id="custom-hotel" value="Pousada Porto Preguiças" placeholder="Sua pousada em Barreirinhas/Atins" class="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-brand-500">
+                  <span class="text-[10px] text-zinc-500 block mt-1">Embarque na recepção</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa 3: Compartilhado vs Privativo -->
+            <div>
+              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">3. Modalidade dos Veículos / Grupo</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <label class="flex items-center space-x-3 p-4 rounded-2xl border border-white/15 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
                   <input type="radio" name="tour_type" value="shared" checked onchange="calculateCustomTour()" class="w-4 h-4 text-brand-500 focus:ring-brand-500">
                   <div>
                     <span class="font-bold text-xs sm:text-sm block">Grupo Compartilhado</span>
-                    <span class="text-[11px] text-zinc-400">Você paga apenas pelos seus assentos no 4x4</span>
+                    <span class="text-[11px] text-zinc-400">Você paga apenas pelo número de vagas/assentos</span>
                   </div>
                 </label>
 
                 <label class="flex items-center space-x-3 p-4 rounded-2xl border border-brand-500/50 bg-brand-500/10 cursor-pointer hover:bg-brand-500/20 transition-colors">
                   <input type="radio" name="tour_type" value="private" onchange="calculateCustomTour()" class="w-4 h-4 text-brand-500 focus:ring-brand-500">
                   <div>
-                    <span class="font-bold text-xs sm:text-sm block text-brand-300">Veículo 4x4 100% Privativo</span>
-                    <span class="text-[11px] text-zinc-300">Carro exclusivo para sua família/casal (até 6 pessoas)</span>
+                    <span class="font-bold text-xs sm:text-sm block text-brand-300">Veículo 4x4 / Lancha Privativo</span>
+                    <span class="text-[11px] text-zinc-300">Exclusivo para sua família ou casal (até 6 pessoas)</span>
                   </div>
                 </label>
               </div>
             </div>
 
-            <!-- Etapa 3: Quantidade de Pessoas e Pousada -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">Número de Pessoas</label>
-                <div class="flex items-center space-x-3 bg-white/5 border border-white/15 rounded-2xl p-2">
-                  <button type="button" onclick="adjustPax(-1)" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 font-bold flex items-center justify-center text-lg">-</button>
-                  <span id="custom-pax-count" class="font-display font-bold text-xl flex-1 text-center">2</span>
-                  <button type="button" onclick="adjustPax(1)" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 font-bold flex items-center justify-center text-lg">+</button>
-                </div>
-              </div>
-
-              <div>
-                <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">Pousada de Saída (Pick-up)</label>
-                <input type="text" id="custom-hotel" value="Pousada Porto Preguiças" placeholder="Nome da sua pousada em Barreirinhas ou Atins" class="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-brand-500">
-              </div>
-            </div>
-
             <!-- Etapa 4: Add-ons e Experiências VIP (Upsell da Empresa de Passeio) -->
             <div>
-              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">3. Adicionais & Mimos de Experiência (Opcional)</label>
+              <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2">4. Adicionais & Mimos de Experiência (Opcional)</label>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
                   <input type="checkbox" id="addon-cooler" value="180" onchange="calculateCustomTour()" class="w-4 h-4 rounded text-brand-500 focus:ring-brand-500">
@@ -717,16 +845,33 @@
           <!-- Resumo de Compra & Fechamento no WhatsApp (4 Colunas) -->
           <div class="lg:col-span-4 bg-surface-900 rounded-2xl p-6 border border-white/15 space-y-5 sticky top-24">
             <div>
-              <span class="text-[10px] font-bold tracking-widest text-brand-400 uppercase">Resumo da Sua Experiência</span>
-              <h3 id="summary-tour-title" class="font-display text-xl font-bold text-white mt-1">Circuito Lagoa Bonita</h3>
-              <p id="summary-tour-type" class="text-xs text-zinc-400 mt-0.5">Grupo Compartilhado • 2 passageiros</p>
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-[10px] font-bold tracking-widest text-brand-400 uppercase">Resumo da Sua Expedição</span>
+                <span id="summary-badge-combo" class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  Combo 2 Passeios
+                </span>
+              </div>
+              
+              <!-- Data Selecionada -->
+              <div class="flex items-center gap-2 text-xs text-brand-300 font-semibold mt-1 mb-2.5 bg-brand-500/10 px-3 py-1.5 rounded-xl border border-brand-500/20">
+                <i class="ph-bold ph-calendar text-sm text-brand-400"></i>
+                <span id="summary-date-display">Data a definir</span>
+              </div>
+
+              <!-- Lista de Circuitos Selecionados -->
+              <div class="text-[11px] text-zinc-400 font-medium mb-1">Passeios Incluídos no Pacote:</div>
+              <div id="summary-circuits-list" class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                <!-- Renderizado via JavaScript -->
+              </div>
+
+              <p id="summary-tour-type" class="text-xs text-zinc-400 mt-2.5 pt-2 border-t border-white/10">Grupo Compartilhado • 2 passageiros</p>
             </div>
 
             <!-- Detalhamento de Valores -->
             <div class="space-y-2 text-xs border-y border-white/10 py-3">
               <div class="flex justify-between text-zinc-300">
-                <span>Valor Base do Passeio:</span>
-                <span id="summary-base-price" class="font-bold text-white">R$ 300,00</span>
+                <span>Subtotal dos Circuitos:</span>
+                <span id="summary-base-price" class="font-bold text-white">R$ 560,00</span>
               </div>
               <div class="flex justify-between text-zinc-300">
                 <span>Adicionais & Mimos:</span>
@@ -734,7 +879,7 @@
               </div>
               <div class="flex justify-between text-brand-300 font-semibold">
                 <span>Desconto Pix (5%):</span>
-                <span id="summary-discount">- R$ 15,00</span>
+                <span id="summary-discount">- R$ 28,00</span>
               </div>
             </div>
 
@@ -742,10 +887,10 @@
             <div>
               <span class="text-[11px] text-zinc-400 block">Investimento Total no Pix</span>
               <div class="flex items-baseline space-x-2">
-                <span id="summary-total-price" class="font-display text-3xl font-extrabold text-white">R$ 285,00</span>
+                <span id="summary-total-price" class="font-display text-3xl font-extrabold text-white">R$ 532,00</span>
                 <span class="text-xs text-zinc-400">à vista</span>
               </div>
-              <p class="text-[11px] text-zinc-400 mt-1">ou 3x de R$ 100 sem juros no cartão de crédito.</p>
+              <p class="text-[11px] text-zinc-400 mt-1">ou 3x sem juros no cartão de crédito.</p>
             </div>
 
             <!-- Botões de Ação -->
@@ -1373,11 +1518,60 @@
   <!-- JAVASCRIPT: LÓGICA E INTERATIVIDADE COMPLETA -->
   <!-- ========================================== -->
   <script>
+    // Circuitos Disponíveis para Seleção Múltipla
+    let availableCircuits = [
+      {
+        id: 'lagoa-bonita',
+        name: 'Lagoa Bonita & Duna 30m',
+        fullName: 'Circuito Lagoa Bonita & Duna do Pôr do Sol',
+        perPax: 150,
+        privatePrice: 950,
+        selected: true
+      },
+      {
+        id: 'santo-amaro',
+        name: 'Santo Amaro (Gaivota & Betânia)',
+        fullName: 'Circuito Santo Amaro das Lagoas',
+        perPax: 280,
+        privatePrice: 1600,
+        selected: false
+      },
+      {
+        id: 'rio-preguicas',
+        name: 'Lancha Voadeira Caburé',
+        fullName: 'Lancha Voadeira Rio Preguiças & Caburé',
+        perPax: 130,
+        privatePrice: 850,
+        selected: true
+      },
+      {
+        id: 'lagoa-azul',
+        name: 'Circuito Lagoa Azul',
+        fullName: 'Circuito Lagoa Azul & Lagoa do Peixe',
+        perPax: 140,
+        privatePrice: 890,
+        selected: false
+      },
+      {
+        id: 'atins-sunset',
+        name: 'Atins Chic & Sunset',
+        fullName: 'Atins Chic & Canto do Atins Sunset',
+        perPax: 220,
+        privatePrice: 1350,
+        selected: false
+      },
+      {
+        id: 'voo-panoramico',
+        name: 'Voo Panorâmico 30min',
+        fullName: 'Sobrevoo Panorâmico de Monomotor (30min)',
+        perPax: 550,
+        privatePrice: 550,
+        selected: false
+      }
+    ];
+
     // Estado da Aplicação
     let currentTour = {
-      name: 'Circuito Lagoa Bonita',
-      pricePerPax: 150,
-      privatePrice: 950,
       isPrivate: false,
       pax: 2,
       addons: 0
@@ -1387,8 +1581,31 @@
     let audioContext = null;
     let audioInterval = null;
 
+    // Formatar data para exibição brasileira
+    function formatBrDate(dateStr) {
+      if (!dateStr) return 'A definir';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      }
+      return dateStr;
+    }
+
     // Inicialização ao carregar
     window.addEventListener('DOMContentLoaded', () => {
+      // Configurar Data Padrão (3 dias no futuro para início ideal)
+      const dateInput = document.getElementById('custom-date');
+      if (dateInput) {
+        const today = new Date();
+        const futureDate = new Date();
+        futureDate.setDate(today.getDate() + 3);
+        const yyyy = futureDate.getFullYear();
+        const mm = String(futureDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(futureDate.getDate()).padStart(2, '0');
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+        dateInput.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      }
+
       // Gerar QR Code do Voucher
       const canvasVoucher = document.getElementById('voucher-qrcode');
       if (canvasVoucher && window.QRCode) {
@@ -1538,21 +1755,50 @@
       });
     }
 
-    // Seleção de Circuito Base no Customizador
-    function selectBaseTour(name, perPax, privatePrice) {
-      currentTour.name = name;
-      currentTour.pricePerPax = perPax;
-      currentTour.privatePrice = privatePrice;
+    // Alternar Seleção de Circuitos (Multi-Seleção)
+    function toggleCircuit(id) {
+      const circuit = availableCircuits.find(c => c.id === id);
+      if (!circuit) return;
 
-      // Atualizar botões visuais
-      document.querySelectorAll('.btn-tour-option').forEach(btn => {
-        btn.classList.remove('border-2', 'border-brand-500', 'bg-brand-500/10');
-        btn.classList.add('border', 'border-white/15', 'bg-white/5');
-      });
-      event.currentTarget.classList.add('border-2', 'border-brand-500', 'bg-brand-500/10');
+      const selectedCount = availableCircuits.filter(c => c.selected).length;
+      // Garante que pelo menos 1 circuito permaneça selecionado
+      if (circuit.selected && selectedCount <= 1) {
+        showToast('Mantenha ao menos 1 circuito selecionado!');
+        if (navigator.vibrate) navigator.vibrate(30);
+        return;
+      }
 
+      circuit.selected = !circuit.selected;
+      updateCircuitCardVisual(id, circuit.selected);
       calculateCustomTour();
-      showToast('Circuito selecionado: ' + name);
+
+      if (circuit.selected) {
+        showToast('Adicionado: ' + circuit.name);
+      } else {
+        showToast('Removido: ' + circuit.name);
+      }
+      if (navigator.vibrate) navigator.vibrate(20);
+    }
+
+    // Atualiza o estado visual do card de circuito
+    function updateCircuitCardVisual(id, isSelected) {
+      const card = document.getElementById('card-circuit-' + id);
+      if (!card) return;
+      const indicator = card.querySelector('.circuit-check-indicator');
+
+      if (isSelected) {
+        card.className = 'circuit-checkbox-card p-4 rounded-2xl border-2 border-brand-500 bg-brand-500/15 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400 relative ring-1 ring-brand-500/30';
+        if (indicator) {
+          indicator.className = 'circuit-check-indicator w-5 h-5 rounded-md bg-brand-500 text-white flex items-center justify-center text-xs shadow-sm';
+          indicator.innerHTML = '<i class="ph-bold ph-check"></i>';
+        }
+      } else {
+        card.className = 'circuit-checkbox-card p-4 rounded-2xl border border-white/15 bg-white/5 cursor-pointer transition-all flex flex-col justify-between group hover:border-brand-400/50 hover:bg-white/10 relative';
+        if (indicator) {
+          indicator.className = 'circuit-check-indicator w-5 h-5 rounded-md bg-white/10 text-transparent flex items-center justify-center text-xs border border-white/20';
+          indicator.innerHTML = '<i class="ph-bold ph-check"></i>';
+        }
+      }
     }
 
     // Ajustar Número de Passageiros
@@ -1562,10 +1808,28 @@
       calculateCustomTour();
     }
 
-    // Cálculo Dinâmico do Valor do Passeio Customizado
+    // Cálculo Dinâmico do Valor da Expedição (com múltiplos circuitos e data)
     function calculateCustomTour() {
       const tourTypeRadio = document.querySelector('input[name="tour_type"]:checked');
       currentTour.isPrivate = tourTypeRadio && tourTypeRadio.value === 'private';
+
+      const selectedList = availableCircuits.filter(c => c.selected);
+      const selectedCount = selectedList.length;
+
+      // Atualizar badge de quantidade no topo
+      const badgeCount = document.getElementById('selected-circuits-badge');
+      if (badgeCount) {
+        badgeCount.textContent = selectedCount + (selectedCount === 1 ? ' selecionado' : ' selecionados');
+      }
+
+      // Atualizar data exibida no resumo
+      const dateInput = document.getElementById('custom-date');
+      const dateVal = dateInput ? dateInput.value : '';
+      const dateFormatted = formatBrDate(dateVal);
+      const summaryDate = document.getElementById('summary-date-display');
+      if (summaryDate) {
+        summaryDate.textContent = 'A partir de ' + dateFormatted;
+      }
 
       // Calcular Add-ons
       let addonsSum = 0;
@@ -1575,13 +1839,13 @@
       if (document.getElementById('addon-sunrise')?.checked) addonsSum += 120;
       currentTour.addons = addonsSum;
 
-      // Valor Base
+      // Calcular Valor Base Somando Todos os Circuitos Selecionados
       let baseTotal = 0;
       if (currentTour.isPrivate) {
-        baseTotal = currentTour.privatePrice;
-        document.getElementById('summary-tour-type').textContent = 'Veículo 4x4 100% Privativo • Até ' + currentTour.pax + ' pessoas';
+        selectedList.forEach(c => baseTotal += c.privatePrice);
+        document.getElementById('summary-tour-type').textContent = 'Veículos 100% Privativos • Até ' + currentTour.pax + ' pessoas';
       } else {
-        baseTotal = currentTour.pricePerPax * currentTour.pax;
+        selectedList.forEach(c => baseTotal += (c.perPax * currentTour.pax));
         document.getElementById('summary-tour-type').textContent = 'Grupo Compartilhado • ' + currentTour.pax + ' passageiro(s)';
       }
 
@@ -1589,8 +1853,37 @@
       const discount = Math.round(subtotal * 0.05);
       const totalPix = subtotal - discount;
 
-      // Atualizar Resumo Visual
-      document.getElementById('summary-tour-title').textContent = currentTour.name;
+      // Atualizar badge de Combo no Resumo
+      const comboBadge = document.getElementById('summary-badge-combo');
+      if (comboBadge) {
+        if (selectedCount > 1) {
+          comboBadge.classList.remove('hidden');
+          comboBadge.textContent = `Combo ${selectedCount} Passeios`;
+        } else {
+          comboBadge.textContent = '1 Passeio';
+        }
+      }
+
+      // Renderizar Lista de Circuitos Selecionados no Card Lateral
+      const listContainer = document.getElementById('summary-circuits-list');
+      if (listContainer) {
+        listContainer.innerHTML = selectedList.map(c => {
+          const priceText = currentTour.isPrivate 
+            ? `R$ ${c.privatePrice.toLocaleString('pt-BR')}`
+            : `R$ ${(c.perPax * currentTour.pax).toLocaleString('pt-BR')} (${currentTour.pax}x R$ ${c.perPax})`;
+          return `
+            <div class="flex items-center justify-between text-xs py-1.5 px-2.5 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-white font-medium truncate mr-2 flex items-center gap-1.5">
+                <i class="ph-bold ph-check text-brand-400 text-xs shrink-0"></i>
+                <span class="truncate">${c.name}</span>
+              </span>
+              <span class="text-brand-300 font-mono text-[11px] whitespace-nowrap font-bold">${priceText}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Atualizar Valores na Interface
       document.getElementById('summary-base-price').textContent = 'R$ ' + baseTotal.toLocaleString('pt-BR') + ',00';
       document.getElementById('summary-addons-price').textContent = 'R$ ' + addonsSum.toLocaleString('pt-BR') + ',00';
       document.getElementById('summary-discount').textContent = '- R$ ' + discount.toLocaleString('pt-BR') + ',00';
@@ -1598,38 +1891,60 @@
       document.getElementById('pix-modal-value').textContent = 'R$ ' + totalPix.toLocaleString('pt-BR') + ',00';
     }
 
-    // Ir direto para o customizador a partir de um card
+    // Ir direto para o customizador a partir de um card de catálogo
     function customizeThisTour(tourName) {
       scrollToSection('personalizar-passeio');
-      if (tourName.includes('Bonita')) selectBaseTour('Lagoa Bonita', 150, 950);
-      else if (tourName.includes('Santo Amaro')) selectBaseTour('Santo Amaro', 280, 1600);
-      else if (tourName.includes('Preguiças')) selectBaseTour('Rio Preguiças', 130, 850);
-      else selectBaseTour(tourName, 220, 1200);
+      // Ativa modalidade privativa
+      const privateRadio = document.querySelector('input[name="tour_type"][value="private"]');
+      if (privateRadio) privateRadio.checked = true;
+
+      // Adiciona o passeio correspondente aos selecionados
+      const cleanName = tourName.toLowerCase();
+      availableCircuits.forEach(c => {
+        if (cleanName.includes(c.id.split('-')[0]) || cleanName.includes(c.name.toLowerCase().split(' ')[0])) {
+          c.selected = true;
+          updateCircuitCardVisual(c.id, true);
+        }
+      });
+      calculateCustomTour();
+      showToast('Passeio adicionado ao configurador privativo!');
     }
 
     // Reserva Rápida
     function bookTourFast(name, price) {
-      currentTour.name = name;
-      currentTour.pricePerPax = price;
-      currentTour.pax = 2;
+      const cleanName = name.toLowerCase();
+      availableCircuits.forEach(c => {
+        c.selected = cleanName.includes(c.id.split('-')[0]) || cleanName.includes(c.name.toLowerCase().split(' ')[0]);
+        updateCircuitCardVisual(c.id, c.selected);
+      });
+      // Se nenhum combinar, mantém o primeiro
+      if (!availableCircuits.some(c => c.selected)) {
+        availableCircuits[0].selected = true;
+        updateCircuitCardVisual(availableCircuits[0].id, true);
+      }
       calculateCustomTour();
       openPixModal();
     }
 
-    // Enviar no WhatsApp com os detalhes customizados
+    // Enviar no WhatsApp com todos os circuitos e data especificada
     function sendCustomizedWhatsApp() {
       const hotel = document.getElementById('custom-hotel').value || 'Pousada em Barreirinhas';
-      const typeText = currentTour.isPrivate ? 'Veículo Privativo' : 'Compartilhado (' + currentTour.pax + ' pessoas)';
+      const dateInput = document.getElementById('custom-date');
+      const dateFormatted = formatBrDate(dateInput ? dateInput.value : '');
+      const selectedList = availableCircuits.filter(c => c.selected);
+      const circuitsListText = selectedList.map(c => `• ${c.fullName}`).join('\n');
+      const typeText = currentTour.isPrivate ? 'Veículo 100% Privativo' : `Grupo Compartilhado (${currentTour.pax} passageiros)`;
       const total = document.getElementById('summary-total-price').textContent;
       
-      const msg = `Oi! Gostaria de confirmar minha reserva nos Lençóis Maranhenses:\n\n` +
-                  `📍 Passeio: ${currentTour.name}\n` +
-                  `🚗 Formato: ${typeText}\n` +
+      const msg = `Olá! Gostaria de confirmar minha reserva nos Lençóis Maranhenses pelo VivantPass:\n\n` +
+                  `📅 Data de Início: ${dateFormatted}\n` +
+                  `📍 Passeios Escolhidos (${selectedList.length}):\n${circuitsListText}\n\n` +
+                  `🚗 Modalidade: ${typeText}\n` +
                   `🏨 Pousada para Pick-up: ${hotel}\n` +
-                  `💰 Valor no Pix: ${total}\n\n` +
-                  `Poderiam confirmar a vaga e o horário de saída?`;
+                  `💰 Valor com Pix (5% OFF): ${total}\n\n` +
+                  `Poderiam confirmar as vagas e o horário de saída na pousada?`;
 
-      window.open('https://api.whatsapp.com/send?phone=5598999999999&text=' + encodeURIComponent(msg), '_blank');
+      window.open('https://api.whatsapp.com/send?phone=5527988140076&text=' + encodeURIComponent(msg), '_blank');
     }
 
     // Modais
