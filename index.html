@@ -1618,7 +1618,7 @@
       // Gerar QR Code do Voucher
       const canvasVoucher = document.getElementById('voucher-qrcode');
       if (canvasVoucher && window.QRCode) {
-        QRCode.toCanvas(canvasVoucher, 'https://rubensloss.github.io/vivant-pass/voucher/VP-LENCOIS-8842', { width: 128, margin: 1 });
+        QRCode.toCanvas(canvasVoucher, 'https://rubensloss.github.io/vivant-pass/?voucher=VP-LENCOIS-8842#meus-vouchers', { width: 128, margin: 1 });
       }
 
       // Gerar QR Code do Pix
